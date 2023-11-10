@@ -5,7 +5,7 @@ public class VisualTesting {
 
     public void testGenerateDeckAndNewHand(){
         Deck deck = new Deck();
-        Hand playerHand = deck.generateNewHand();
+        Hand playerHand = deck.dealNewHand();
 
         System.out.println("\n deck+hand constructed");
         System.out.println("DECK: " + deck.getCardsDeck());

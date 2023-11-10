@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 public class Deck {
     private ArrayList<Card> cardsDeck = new ArrayList<>();
     public static final int[] ALL_VALUES = {1,2,3,4,5,6,7,8,9,10,10,10,10};
-    public static final String[] ALL_SUITS = {"clubs", "spades", "hearts", "diamonds"};
-    public static final String[] ALL_RANKS = {"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"};
+    public static final String[] ALL_SUITS = {"♣", "♦", "♥", "♠"};
+    public static final String[] ALL_RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     public static final ArrayList<String> ALL_SUITSLIST = new ArrayList<>(Arrays.asList(ALL_SUITS));
     public static final ArrayList<String> ALL_RANKSLIST = new ArrayList<>(Arrays.asList(ALL_RANKS));
 
@@ -40,7 +41,7 @@ public class Deck {
     }
 
     
-    public Hand generateNewHand(){
+    public Hand dealNewHand(){
         Hand hand = new Hand();
         for(int i = 0; i < 5; i++){
             Card cardToAdd = pickCardFromTop();
@@ -50,8 +51,15 @@ public class Deck {
     }
 
     public Card pickCardFromTop(){
-        Card cardToPick = cardsDeck.get(0);
-        cardsDeck.remove(cardToPick);
+        Card cardToPick = new Card();
+        try{
+            cardToPick = cardsDeck.get(0);
+            cardsDeck.remove(cardToPick);
+        }
+        catch(Exception e){
+            System.out.println("Out of cards");
+        }
+
         return cardToPick;
     }
 

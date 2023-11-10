@@ -79,10 +79,11 @@ public class Hand {
     }
 
     public String toString(){
-        String out = "";
-        for(Card card : cards){
-            out += card + "\n";
+        String out = "Hand = ";
+        for(int i = 0; i<cards.size(); i++){
+            out += "(" +(i+1)+ ") " + cards.get(i) + ", ";
         }
+        out = out.substring(0,out.length()-2);  // removes the last comma
         return out;
     }
 }
