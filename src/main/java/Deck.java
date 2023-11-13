@@ -1,7 +1,8 @@
+package main.java;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.ExecutionException;
 
 public class Deck {
     private ArrayList<Card> cardsDeck = new ArrayList<>();
@@ -56,8 +57,8 @@ public class Deck {
             cardToPick = cardsDeck.get(0);
             cardsDeck.remove(cardToPick);
         }
-        catch(Exception e){
-            System.out.println("Out of cards");
+        catch(Exception ignoreMe){
+
         }
 
         return cardToPick;

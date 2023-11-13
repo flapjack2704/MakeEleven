@@ -1,7 +1,9 @@
+package main.java;
+
 import java.util.Scanner;
 
 /**
- * GameRunner
+ * main.java.GameRunner
  */
 public class GameRunner {
     private static final Scanner sc = new Scanner(System.in);
@@ -24,6 +26,7 @@ public class GameRunner {
 
             int cardChoice = 0;
             Card cardChosen = new Card();
+            System.out.println("------------------------------------------------------------------------");
             // Pick a card, or sort the hand loop
             while(true){
                 System.out.println("\nDeck cards left: " + deck.getCardsDeck().size());
@@ -58,6 +61,30 @@ public class GameRunner {
             if(cardChosen.getValue() + computerAdversary.getOpponentCard().getValue() == 11){
                 System.out.println("You made Eleven with " + cardChosen + " + " + computerAdversary.getOpponentCard());
                 points++;
+
+                System.out.println("\nYou may also discard any picture cards you have");
+                int picCardChoice = -1;
+                while(true){
+                    System.out.println("Select a card to discard, or enter \"0\" to continue");
+                    System.out.println(playerHand);
+                    picCardChoice = inputInteger(0, playerHand.getCards().size());
+
+                    if(picCardChoice == 0){
+                        break;
+                    }
+
+                    Card picCardPicked = playerHand.getCards().get(picCardChoice-1);
+                    if(picCardPicked.getValue()==10 && !picCardPicked.getRank().equals("10")){
+                        playerHand.removeCardFromHand(picCardPicked);
+                        System.out.println(picCardPicked + " removed from hand");
+                    }
+                    else{
+                        System.out.println("That's not a picture card, nice try >:P");
+                    }
+
+
+                }//end of picture card discard loop
+
             }
             else if(cardChosen.getSuit().equals(computerAdversary.getOpponentCard().getSuit())){
                 System.out.println("You didn't make Eleven, but at least it was the same suit so we carry on...");
@@ -67,18 +94,20 @@ public class GameRunner {
 
 
 
-            for(int i = 0; i < (5-playerHand.getCards().size()); i++){
+            while(playerHand.getCards().size() != 5){
                 playerHand.addCardToHand(deck.pickCardFromTop());
             }
-            computerAdversary.setOpponentCard(deck.pickCardFromTop());
+
             if(deck.getCardsDeck().size()==0){
                 System.out.println("Bloody hell, the deck is out of cards, you did well staying in that long!");
                 break;
-            }
+            }  // No sense ending the game when we have an empty deck BUT have a card everywhere else it needs to be
+
+            computerAdversary.setOpponentCard(deck.pickCardFromTop());
         }//end of main game loop
 
 
-        System.out.println("gg ez: " + points);
+        System.out.println("gg ez, game ended with: " + points + "points.");
         
 
 
