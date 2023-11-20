@@ -18,6 +18,7 @@ public class Deck {
                 cardsDeck.add(new Card(suit, ALL_RANKS[i], ALL_VALUES[i]));
             }
         }
+        this.shuffleDeck();
     }
 
 
@@ -41,7 +42,7 @@ public class Deck {
         return ALL_VALUES;
     }
 
-    
+
     public Hand dealNewHand(){
         Hand hand = new Hand();
         for(int i = 0; i < 5; i++){
@@ -67,5 +68,5 @@ public class Deck {
     public void shuffleDeck(){
         Collections.shuffle(cardsDeck);
     }
-    
+
 }

@@ -81,7 +81,7 @@ public class Hand {
     }
 
     public String toString(){
-        String out = "Hand = ";
+        String out = "";
         for(int i = 0; i<cards.size(); i++){
             out += "(" +(i+1)+ ") " + cards.get(i) + ", ";
         }

@@ -2,22 +2,41 @@ package main.java;
 
 import java.util.Scanner;
 
-/**
- * main.java.GameRunner
+/*
+    Class handles the main legwork of running the game
  */
 public class GameRunner {
     private static final Scanner sc = new Scanner(System.in);
+    private Deck deck;
+    private Hand playerHand;
+    private Opponent computerAdversary;
+    private int points;
 
+    public GameRunner(){
+        deck = new Deck();
+        playerHand = deck.dealNewHand();
+        computerAdversary = new Opponent();
+        computerAdversary.setOpponentCard(deck.pickCardFromTop());
+        points = 0;
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public Hand getPlayerHand() {
+        return playerHand;
+    }
+
+    public Card getOpponentCard(){
+        return computerAdversary.getOpponentCard();
+    }
+
+    public int getPoints(){
+        return points;
+    }
 
     public void runGame(){
-        Deck deck = new Deck();
-
-        deck.shuffleDeck();
-        Hand playerHand = deck.dealNewHand();
-        Opponent computerAdversary = new Opponent();
-        int points = 0;
-
-        computerAdversary.setOpponentCard(deck.pickCardFromTop());
 
         /*
             The while loop here is the basic game loop, i.e it breaks when it is "game over"
@@ -66,7 +85,7 @@ public class GameRunner {
                 int picCardChoice = -1;
                 while(true){
                     System.out.println("Select a card to discard, or enter \"0\" to continue");
-                    System.out.println(playerHand);
+                    System.out.println("Hand = " + playerHand);
                     picCardChoice = inputInteger(0, playerHand.getCards().size());
 
                     if(picCardChoice == 0){
@@ -107,19 +126,20 @@ public class GameRunner {
         }//end of main game loop
 
 
-        System.out.println("gg ez, game ended with: " + points + "points.");
-        
+        System.out.println("gg ez, game ended with: " + points + " points.");
+
 
 
     }
 
 
 
-    private boolean canMakeEleven(Hand hand, Card targetCard){
 
-
-
-        return false;
+    public void sortHandBySuit(){
+        playerHand.sortHandBySuit();
+    }
+    public void sortHandByValue(){
+        playerHand.sortHandByValue();
     }
 
 
