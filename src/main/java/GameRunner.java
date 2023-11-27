@@ -3,7 +3,8 @@ package main.java;
 import java.util.Scanner;
 
 /*
-    Class handles the main legwork of running the game
+    Class handles the main legwork of running the game + keeps track of progress,
+    i.e keeping track of cards in deck+hand+opponent, points ...
  */
 public class GameRunner {
     private static final Scanner sc = new Scanner(System.in);
@@ -141,6 +142,7 @@ public class GameRunner {
     public void sortHandByValue(){
         playerHand.sortHandByValue();
     }
+    public void removeCardFromHand(Card card) {playerHand.removeCardFromHand(card);}
 
 
     public int inputInteger(){

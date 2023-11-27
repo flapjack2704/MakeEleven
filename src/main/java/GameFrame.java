@@ -14,10 +14,8 @@ public class GameFrame extends JFrame implements ActionListener{
     private JButton suitSortButton;
     private JButton valueSortButton;
     private GameRunner gameRunner;
-    private JPanel handPanel;
+    private HandPanel handPanel;
     private JPanel opponentPanel;
-
-    private Color defaultButtonColour = new Color(232, 232, 232);
 
     public GameFrame(GameRunner gameRunner){
         this.gameRunner = gameRunner;
@@ -30,8 +28,8 @@ public class GameFrame extends JFrame implements ActionListener{
 
         this.addSortButtons();
         this.drawInfoLabel("Pick a card to make 11 with the opponent's card");
-        this.drawPlayerHandPanel();
-        this.drawOpponentHandPanel();
+        this.initHandPanel();
+        this.drawOpponentPanel();
         this.drawPointsLabel();
         this.drawDeckSizeLabel();
         this.setVisible(true);
@@ -50,15 +48,15 @@ public class GameFrame extends JFrame implements ActionListener{
         suitSortButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
         suitSortButton.addActionListener(this);
 
-        suitSortButton.setBackground(defaultButtonColour);
+        suitSortButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
         suitSortButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                suitSortButton.setBackground(new Color(185, 184, 184));
+                suitSortButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                suitSortButton.setBackground(defaultButtonColour);
+                suitSortButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
             }
         });
         suitSortButton.setText("Sort By Suit");
@@ -71,15 +69,15 @@ public class GameFrame extends JFrame implements ActionListener{
         valueSortButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
         valueSortButton.addActionListener(this);
 
-        valueSortButton.setBackground(defaultButtonColour);
+        valueSortButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
         valueSortButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                valueSortButton.setBackground(new Color(185, 184, 184));
+                valueSortButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                valueSortButton.setBackground(defaultButtonColour);
+                valueSortButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
             }
         });
         valueSortButton.setText("Sort By Value");
@@ -103,63 +101,16 @@ public class GameFrame extends JFrame implements ActionListener{
         this.add(label);
     }
 
-    private void drawPlayerHandPanel(){
-        handPanel = new JPanel();
-        handPanel.setLayout(null);
-        //handPanel.setBackground(Color.CYAN);
-        handPanel.setOpaque(false);
-        handPanel.setBounds(0, 550, 800, 200);
+    private void initHandPanel(){
+        this.handPanel = new HandPanel(gameRunner);
         this.add(handPanel);
-
-
-        JLabel label = new JLabel();
-        label.setBackground(new Color(88, 154, 96));
-        label.setOpaque(true);  // needed to show background colour
-        label.setVerticalAlignment(JLabel.CENTER);
-        label.setHorizontalAlignment(JLabel.CENTER);
-
-        Border blackBorder = BorderFactory.createLineBorder(Color.black, 6);
-        label.setBorder(blackBorder);
-        label.setBounds(6,0,776,200);
-        handPanel.add(label);
-
-
-        // initialise hand buttons
-        for(int i = 0; i < 5; i++){
-            JButton button = new JButton();
-            Card card = gameRunner.getPlayerHand().getCards().get(i);
-
-            button.setText(card.toString());
-            if(card.getSuit().equals("♦") || card.getSuit().equals("♥")){
-                button.setForeground(new Color(255,0,0));
-            }
-            button.setFont(new Font("Helvetica", Font.BOLD, 30));
-            button.setBounds((i*150)+((label.getWidth()/2) - 340), 45, 80, 110);
-            button.setHorizontalAlignment(JButton.CENTER);
-            button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
-            button.addActionListener(e ->
-                    JOptionPane.showMessageDialog(null,"Card clicked: " + button.getText()));
-
-            button.setBackground(defaultButtonColour);
-            button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    button.setBackground(new Color(185, 184, 184));
-                }
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    button.setBackground(defaultButtonColour);
-                }
-            });
-            button.setFocusable(false);
-            button.setVisible(true);
-
-            label.add(button);
-
-        }
     }
 
-    public void drawOpponentHandPanel(){
+    private void updatePlayerHandPanel(){
+        handPanel.updateHandLabel(gameRunner);
+    }
+
+    public void drawOpponentPanel(){
         opponentPanel = new JPanel();
         opponentPanel.setLayout(null);
         opponentPanel.setBackground(new Color(42, 150, 4));
@@ -224,18 +175,25 @@ public class GameFrame extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == suitSortButton){
             gameRunner.sortHandBySuit();
-            handPanel.removeAll();
-            this.drawPlayerHandPanel();
+            /*handPanel.removeAll();
+            this.initHandPanel();
             handPanel.revalidate();
             handPanel.repaint();
+
+             */
+            this.updatePlayerHandPanel();
         }
 
         if(e.getSource() == valueSortButton){
             gameRunner.sortHandByValue();
+            /*
             handPanel.removeAll();
-            this.drawPlayerHandPanel();
+            this.initHandPanel();
             handPanel.revalidate();
             handPanel.repaint();
+
+             */
+            this.updatePlayerHandPanel();
         }
     }
 }
