@@ -3,8 +3,7 @@ package main.java;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -28,6 +27,7 @@ public class HandPanel extends JPanel {
     }
 
     public void drawPlayerHandPanel(GameRunner gameRunner){
+        this.removeAll();
         handLabel = new JLabel();
         handLabel.setBackground(new Color(88, 154, 96));
         handLabel.setOpaque(true);  // needed to show background colour
@@ -57,10 +57,12 @@ public class HandPanel extends JPanel {
                 }
             });
 
+            button.addActionListener(e -> HandPanel.handButtonClicked(button));
             handLabel.add(button);
             buttons.add(button);
         }
-
+        this.revalidate();
+        this.repaint();
 
     }
 
@@ -71,7 +73,7 @@ public class HandPanel extends JPanel {
         for(Card card : gameRunner.getPlayerHand().getCards()){
             String cardString = card.toString();
             for(CardButton button : buttons){
-                if(button.card.toString().equals(cardString)){
+                if(button.getCard().toString().equals(cardString)){
                     newButtonsList.add(button);
                     break;
                 }
@@ -105,7 +107,7 @@ public class HandPanel extends JPanel {
     }
 
     public static void handButtonClicked(CardButton button){
-        JOptionPane.showMessageDialog(null,"Card clicked: " + button.getText());
         button.setEnabled(false);
+        GameFrame.handCardPressed(button);
     }
 }

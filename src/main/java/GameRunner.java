@@ -145,6 +145,74 @@ public class GameRunner {
     public void removeCardFromHand(Card card) {playerHand.removeCardFromHand(card);}
 
 
+
+    public void checkSelectedCard(Card card){
+        if(card.getValue() + computerAdversary.getOpponentCard().getValue() == 11){
+            System.out.println("You made Eleven with " + card + " + " + computerAdversary.getOpponentCard());
+            points++;
+
+            System.out.println("\nYou may also discard any picture cards you have");
+            /*
+            int picCardChoice = -1;
+            while(true){
+                System.out.println("Select a card to discard, or enter \"0\" to continue");
+                System.out.println("Hand = " + playerHand);
+                picCardChoice = inputInteger(0, playerHand.getCards().size());
+
+                if(picCardChoice == 0){
+                    break;
+                }
+
+                Card picCardPicked = playerHand.getCards().get(picCardChoice-1);
+                if(picCardPicked.getValue()==10 && !picCardPicked.getRank().equals("10")){
+                    playerHand.removeCardFromHand(picCardPicked);
+                    System.out.println(picCardPicked + " removed from hand");
+                }
+                else{
+                    System.out.println("That's not a picture card, nice try >:P");
+                }
+
+
+            }//end of picture card discard loop
+
+             */
+
+        }
+        else if(card.getSuit().equals(computerAdversary.getOpponentCard().getSuit())){
+            System.out.println("You didn't make Eleven, but at least it was the same suit so we carry on...");
+        }
+
+
+        while(playerHand.getCards().size() != 5){
+            playerHand.addCardToHand(deck.pickCardFromTop());
+        }
+
+        if(deck.getCardsDeck().size()==0){
+            System.out.println("Bloody hell, the deck is out of cards, you did well staying in that long!");
+            return;
+        }  // No sense ending the game when we have an empty deck BUT have a card everywhere else it needs to be
+
+        computerAdversary.setOpponentCard(deck.pickCardFromTop());
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public int inputInteger(){
 
         while(true){

@@ -6,7 +6,7 @@ public class Hand {
     private ArrayList<Card> cards = new ArrayList<>();
 
     public Hand(){
-        
+
     }
 
     public Hand(ArrayList<Card> cards){
@@ -43,9 +43,9 @@ public class Hand {
         for(int i = 0; i < cards.size(); i++){
             boolean[] flags = new boolean[4];  // if all gets filled as true, break loop
 
-            for(int k = 0; k < 4; k++){
-                if(Deck.ALL_RANKSLIST.indexOf(cards.get(k).getRank()) 
-                  > Deck.ALL_RANKSLIST.indexOf(cards.get(k+1).getRank())){
+            for(int k = 0; k < cards.size()-1; k++){
+                if(Deck.ALL_RANKSLIST.indexOf(cards.get(k).getRank())
+                        > Deck.ALL_RANKSLIST.indexOf(cards.get(k+1).getRank())){
                     Card temp = cards.get(k);
                     cards.set(k, cards.get(k+1));
                     cards.set(k+1, temp);
@@ -64,9 +64,9 @@ public class Hand {
         for(int i = 0; i < cards.size(); i++){
             boolean[] flags = new boolean[4];  // if all gets filled as true, break loop
 
-            for(int k = 0; k < 4; k++){
-                if(Deck.ALL_SUITSLIST.indexOf(cards.get(k).getSuit()) 
-                  > Deck.ALL_SUITSLIST.indexOf(cards.get(k+1).getSuit())){
+            for(int k = 0; k < cards.size()-1; k++){
+                if(Deck.ALL_SUITSLIST.indexOf(cards.get(k).getSuit())
+                        > Deck.ALL_SUITSLIST.indexOf(cards.get(k+1).getSuit())){
                     Card temp = cards.get(k);
                     cards.set(k, cards.get(k+1));
                     cards.set(k+1, temp);

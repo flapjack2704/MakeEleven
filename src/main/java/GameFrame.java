@@ -13,12 +13,15 @@ public class GameFrame extends JFrame implements ActionListener{
 
     private JButton suitSortButton;
     private JButton valueSortButton;
-    private GameRunner gameRunner;
-    private HandPanel handPanel;
-    private JPanel opponentPanel;
+    private static GameRunner gameRunner;
+    private static HandPanel handPanel;
+    private static OpponentPanel opponentPanel;
+    private JLabel infoLabel;
+    private static JLabel pointsLabel;
+    private static JLabel deckSizeLabel;
 
     public GameFrame(GameRunner gameRunner){
-        this.gameRunner = gameRunner;
+        GameFrame.gameRunner = gameRunner;
         this.setSize(800,800);
         this.setResizable(false);
         this.setTitle("Make Eleven");
@@ -29,7 +32,7 @@ public class GameFrame extends JFrame implements ActionListener{
         this.addSortButtons();
         this.drawInfoLabel("Pick a card to make 11 with the opponent's card");
         this.initHandPanel();
-        this.drawOpponentPanel();
+        this.initOpponentPanel();
         this.drawPointsLabel();
         this.drawDeckSizeLabel();
         this.setVisible(true);
@@ -38,7 +41,12 @@ public class GameFrame extends JFrame implements ActionListener{
     }
 
     public void runGame(){
+        /*
+            The while loop here is the basic game loop, i.e it breaks when it is "game over"
+         */
+        while (true){
 
+        }
     }
 
 
@@ -87,18 +95,18 @@ public class GameFrame extends JFrame implements ActionListener{
     }
 
     private void drawInfoLabel(String info){
-        JLabel label = new JLabel();
-        label.setText("<html>" + info + "</html>");  // dynamically fits string inside label
-        label.setBackground(new Color(113, 218, 124));
-        label.setFont(new Font("Helvetica", Font.BOLD, 16));
-        label.setOpaque(true);  // needed to show background colour
-        label.setVerticalAlignment(JLabel.TOP);
-        label.setHorizontalAlignment(JLabel.CENTER);
+        infoLabel = new JLabel();
+        infoLabel.setText("<html>" + info + "</html>");  // dynamically fits string inside label
+        infoLabel.setBackground(new Color(113, 218, 124));
+        infoLabel.setFont(new Font("Helvetica", Font.BOLD, 16));
+        infoLabel.setOpaque(true);  // needed to show background colour
+        infoLabel.setVerticalAlignment(JLabel.TOP);
+        infoLabel.setHorizontalAlignment(JLabel.CENTER);
 
         Border blackBorder = BorderFactory.createLineBorder(Color.black, 6);
-        label.setBorder(blackBorder);
-        label.setBounds(10,80,200,300);
-        this.add(label);
+        infoLabel.setBorder(blackBorder);
+        infoLabel.setBounds(10,80,200,300);
+        this.add(infoLabel);
     }
 
     private void initHandPanel(){
@@ -110,37 +118,13 @@ public class GameFrame extends JFrame implements ActionListener{
         handPanel.updateHandLabel(gameRunner);
     }
 
-    public void drawOpponentPanel(){
-        opponentPanel = new JPanel();
-        opponentPanel.setLayout(null);
-        opponentPanel.setBackground(new Color(42, 150, 4));
-        opponentPanel.setBounds(450, 20, 300, 200);
-        opponentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 7));
+    public void initOpponentPanel(){
+        opponentPanel = new OpponentPanel(gameRunner);
         this.add(opponentPanel);
-
-        JLabel opponentCardLabel = new JLabel();
-        Card opponentCard = gameRunner.getOpponentCard();
-
-        opponentCardLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
-        opponentCardLabel.setText(gameRunner.getOpponentCard().toString());
-        if(opponentCard.getSuit().equals("♦") || opponentCard.getSuit().equals("♥")){
-            opponentCardLabel.setForeground(new Color(255,0,0));
-        }
-        opponentCardLabel.setVerticalAlignment(JLabel.CENTER);
-        opponentCardLabel.setHorizontalAlignment(JLabel.CENTER);
-
-        Border blackBorder = BorderFactory.createLineBorder(Color.black, 5);
-        opponentCardLabel.setBorder(blackBorder);
-        opponentCardLabel.setBackground(new Color(239, 239, 239));
-        opponentCardLabel.setOpaque(true);
-        opponentCardLabel.setBounds(50,45,80,110);
-
-        opponentPanel.add(opponentCardLabel);
-
     }
 
     public void drawPointsLabel(){
-        JLabel pointsLabel = new JLabel();
+        pointsLabel = new JLabel();
         String points = String.valueOf(gameRunner.getPoints());  // Wouldn't direct cast to string -> needed valueOf()
         pointsLabel.setText("Points: " + points);
         pointsLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
@@ -156,9 +140,8 @@ public class GameFrame extends JFrame implements ActionListener{
     }
 
     public void drawDeckSizeLabel(){
-        JLabel deckSizeLabel = new JLabel();
-        String deckSize = String.valueOf(gameRunner.getDeck().getCardsDeck().size());
-        deckSizeLabel.setText("Cards in deck: " + deckSize);
+        deckSizeLabel = new JLabel();
+        deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
         deckSizeLabel.setVerticalAlignment(JLabel.CENTER);
         deckSizeLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
         deckSizeLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -171,28 +154,37 @@ public class GameFrame extends JFrame implements ActionListener{
         this.add(deckSizeLabel);
     }
 
+    public static void handCardPressed(CardButton button){
+        /*
+            Used in HandPanel's CardButtons' actionPerformed methods
+         */
+        Card card = button.getCard();
+        Card opponentCard = gameRunner.getOpponentCard();
+        JOptionPane.showMessageDialog(null, "Card clicked: " + button.getText());
+        gameRunner.removeCardFromHand(card);
+        gameRunner.checkSelectedCard(card);
+        pointsLabel.setText("Points: " + gameRunner.getPoints());
+        deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
+        System.out.println("Test test " + gameRunner.getOpponentCard());
+
+        //If opponent card hasn't changed, else...
+        if(!opponentCard.equals(gameRunner.getOpponentCard())){
+            opponentPanel.updateOpponentLabel(gameRunner);
+            handPanel.drawPlayerHandPanel(gameRunner);
+        }
+        else{
+            // TO-ADD: End-game-method()
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == suitSortButton){
             gameRunner.sortHandBySuit();
-            /*handPanel.removeAll();
-            this.initHandPanel();
-            handPanel.revalidate();
-            handPanel.repaint();
-
-             */
             this.updatePlayerHandPanel();
         }
-
-        if(e.getSource() == valueSortButton){
+        else if(e.getSource() == valueSortButton){
             gameRunner.sortHandByValue();
-            /*
-            handPanel.removeAll();
-            this.initHandPanel();
-            handPanel.revalidate();
-            handPanel.repaint();
-
-             */
             this.updatePlayerHandPanel();
         }
     }
