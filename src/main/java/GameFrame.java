@@ -38,19 +38,7 @@ public class GameFrame extends JFrame implements ActionListener{
         this.drawPointsLabel();
         this.drawDeckSizeLabel();
         this.setVisible(true);
-
-        this.runGame();
     }
-
-    public void runGame(){
-        /*
-            The while loop here is the basic game loop, i.e it breaks when it is "game over"
-         */
-        while (true){
-
-        }
-    }
-
 
     private void addSortButtons(){
         suitSortButton = new JButton();
@@ -142,7 +130,7 @@ public class GameFrame extends JFrame implements ActionListener{
                 }
             });
 
-            button.addActionListener(e -> handButtonClicked(button));
+            button.addActionListener(e -> handCardPressed(button));
             handPanel.handLabel.add(button);
             handPanel.addButtonToArrayList(button);
         }
@@ -195,33 +183,6 @@ public class GameFrame extends JFrame implements ActionListener{
         handPanel.handLabel.repaint();
     }
 
-    public void handCardPressed(CardButton button){
-        /*
-            Used in HandPanel's CardButtons' actionPerformed methods
-         */
-        Card card = button.getCard();
-        Card opponentCard = gameRunner.getOpponentCard();
-        JOptionPane.showMessageDialog(null, "Card clicked: " + button.getText());
-        gameRunner.removeCardFromHand(card);
-        gameRunner.checkSelectedCard(card);
-        pointsLabel.setText("Points: " + gameRunner.getPoints());
-        deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
-
-        //If opponent card hasn't changed, it means we ran out of cards in the deck
-        if(!opponentCard.equals(gameRunner.getOpponentCard())){
-            opponentPanel.updateOpponentLabel(gameRunner);
-            drawPlayerHandPanel();
-        }
-        else{
-            endGameFrame();
-        }
-    }
-
-    public void handButtonClicked(CardButton button){
-        button.setEnabled(false);
-        handCardPressed(button);
-    }
-
     public void initOpponentPanel(){
         opponentPanel = new OpponentPanel(gameRunner);
         this.add(opponentPanel);
@@ -237,7 +198,7 @@ public class GameFrame extends JFrame implements ActionListener{
         pointsLabel.setBounds(600,450,180,80);
         pointsLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
         pointsLabel.setBackground(new Color(42, 150, 4));
-        pointsLabel.setForeground(new Color(253, 104, 104));
+        pointsLabel.setForeground(new Color(255, 255, 255));
         pointsLabel.setOpaque(true);
 
         this.add(pointsLabel);
@@ -252,7 +213,7 @@ public class GameFrame extends JFrame implements ActionListener{
         deckSizeLabel.setBounds(10,10, 200, 50);
         deckSizeLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
         deckSizeLabel.setBackground(new Color(42, 150, 4));
-        deckSizeLabel.setForeground(new Color(253, 104, 104));
+        deckSizeLabel.setForeground(new Color(255, 255, 255));
         deckSizeLabel.setOpaque(true);
 
         this.add(deckSizeLabel);
@@ -260,7 +221,45 @@ public class GameFrame extends JFrame implements ActionListener{
 
 
     public void endGameFrame(){
-        this.removeAll();
+        this.getContentPane().removeAll();
+        JLabel endGameLabel = new JLabel();
+        endGameLabel.setText("Game over, you scored: " + gameRunner.getPoints());
+        endGameLabel.setVerticalAlignment(JLabel.CENTER);
+        endGameLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
+        endGameLabel.setHorizontalAlignment(JLabel.CENTER);
+        endGameLabel.setBounds(100,90, 600, 600);
+        endGameLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        endGameLabel.setBackground(new Color(42, 150, 4));
+        endGameLabel.setForeground(new Color(255, 255, 255));
+        endGameLabel.setOpaque(true);
+
+        this.add(endGameLabel);
+        this.revalidate();
+        this.repaint();
+    }
+
+
+    public void handCardPressed(CardButton button){
+        /*
+
+         */
+        button.setEnabled(false);
+        Card card = button.getCard();
+        Card opponentCard = gameRunner.getOpponentCard();
+        JOptionPane.showMessageDialog(null, "Card clicked: " + button.getText());
+        gameRunner.removeCardFromHand(card);
+
+
+        //If opponent card hasn't changed, it means we ran out of cards in the deck
+        if(gameRunner.checkSelectedCard(card)){
+            pointsLabel.setText("Points: " + gameRunner.getPoints());
+            deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
+            opponentPanel.updateOpponentLabel(gameRunner);
+            drawPlayerHandPanel();
+        }
+        else{
+            endGameFrame();
+        }
     }
 
     @Override
