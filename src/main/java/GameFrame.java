@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /*
     Class draws the game graphics
@@ -31,7 +32,8 @@ public class GameFrame extends JFrame implements ActionListener{
 
         this.addSortButtons();
         this.drawInfoLabel("Pick a card to make 11 with the opponent's card");
-        this.initHandPanel();
+        handPanel = new HandPanel(gameRunner);
+        this.drawPlayerHandPanel();
         this.initOpponentPanel();
         this.drawPointsLabel();
         this.drawDeckSizeLabel();
@@ -109,13 +111,115 @@ public class GameFrame extends JFrame implements ActionListener{
         this.add(infoLabel);
     }
 
-    private void initHandPanel(){
-        this.handPanel = new HandPanel(gameRunner);
+    public void drawPlayerHandPanel(){
+        handPanel.removeAll();
+        handPanel.handLabel = new JLabel();
+        handPanel.handLabel.setBackground(new Color(88, 154, 96));
+        handPanel.handLabel.setOpaque(true);  // needed to show background colour
+        handPanel.handLabel.setVerticalAlignment(JLabel.CENTER);
+        handPanel.handLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        Border blackBorder = BorderFactory.createLineBorder(Color.black, 6);
+        handPanel.handLabel.setBorder(blackBorder);
+        handPanel.handLabel.setBounds(6,0,776,200);
+        handPanel.add(handPanel.handLabel);
+
+        // initialise hand buttons
+        for(int i = 0; i < gameRunner.getPlayerHand().getCards().size(); i++){
+            Card card = gameRunner.getPlayerHand().getCards().get(i);
+            CardButton button = new CardButton(card);
+            button.setBounds((i*150)+((handPanel.handLabel.getWidth()/2) - 340), 45, 80, 110);
+
+            // Couldn't set background in CardButton constructor with "this.setBackground()"
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    button.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    button.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
+                }
+            });
+
+            button.addActionListener(e -> handButtonClicked(button));
+            handPanel.handLabel.add(button);
+            handPanel.addButtonToArrayList(button);
+        }
         this.add(handPanel);
+        this.revalidate();
+        this.repaint();
+
     }
 
-    private void updatePlayerHandPanel(){
-        handPanel.updateHandLabel(gameRunner);
+    public void updatePlayerHandPanel(){
+
+        //sort buttons
+        ArrayList<CardButton> newButtonsList = new ArrayList<>();
+        for(Card card : gameRunner.getPlayerHand().getCards()){
+            String cardString = card.toString();
+            for(CardButton button : handPanel.getButtons()){
+                if(button.getCard().toString().equals(cardString)){
+                    newButtonsList.add(button);
+                    break;
+                }
+            }
+        }
+        handPanel.setButtons(newButtonsList);
+
+        handPanel.handLabel.removeAll();
+
+        //add new buttons
+        ArrayList<CardButton> buttons = handPanel.getButtons();
+        for(int i = 0; i < newButtonsList.size(); i++){
+            CardButton button = buttons.get(i);
+            button.setBounds((i*150)+((handPanel.handLabel.getWidth()/2) - 340), 45, 80, 110);
+
+            // Couldn't set background in CardButton constructor with "this.setBackground()"
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    button.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    button.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
+                }
+            });
+
+            handPanel.handLabel.add(button);
+
+        }
+        this.add(handPanel);
+        handPanel.handLabel.revalidate();
+        handPanel.handLabel.repaint();
+    }
+
+    public void handCardPressed(CardButton button){
+        /*
+            Used in HandPanel's CardButtons' actionPerformed methods
+         */
+        Card card = button.getCard();
+        Card opponentCard = gameRunner.getOpponentCard();
+        JOptionPane.showMessageDialog(null, "Card clicked: " + button.getText());
+        gameRunner.removeCardFromHand(card);
+        gameRunner.checkSelectedCard(card);
+        pointsLabel.setText("Points: " + gameRunner.getPoints());
+        deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
+
+        //If opponent card hasn't changed, it means we ran out of cards in the deck
+        if(!opponentCard.equals(gameRunner.getOpponentCard())){
+            opponentPanel.updateOpponentLabel(gameRunner);
+            drawPlayerHandPanel();
+        }
+        else{
+            endGameFrame();
+        }
+    }
+
+    public void handButtonClicked(CardButton button){
+        button.setEnabled(false);
+        handCardPressed(button);
     }
 
     public void initOpponentPanel(){
@@ -154,27 +258,9 @@ public class GameFrame extends JFrame implements ActionListener{
         this.add(deckSizeLabel);
     }
 
-    public static void handCardPressed(CardButton button){
-        /*
-            Used in HandPanel's CardButtons' actionPerformed methods
-         */
-        Card card = button.getCard();
-        Card opponentCard = gameRunner.getOpponentCard();
-        JOptionPane.showMessageDialog(null, "Card clicked: " + button.getText());
-        gameRunner.removeCardFromHand(card);
-        gameRunner.checkSelectedCard(card);
-        pointsLabel.setText("Points: " + gameRunner.getPoints());
-        deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
-        System.out.println("Test test " + gameRunner.getOpponentCard());
 
-        //If opponent card hasn't changed, else...
-        if(!opponentCard.equals(gameRunner.getOpponentCard())){
-            opponentPanel.updateOpponentLabel(gameRunner);
-            handPanel.drawPlayerHandPanel(gameRunner);
-        }
-        else{
-            // TO-ADD: End-game-method()
-        }
+    public void endGameFrame(){
+        this.removeAll();
     }
 
     @Override

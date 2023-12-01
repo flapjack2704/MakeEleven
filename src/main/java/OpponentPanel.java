@@ -44,6 +44,9 @@ public class OpponentPanel extends JPanel {
         if(opponentCard.getSuit().equals("♦") || opponentCard.getSuit().equals("♥")){
             opponentLabel.setForeground(new Color(255,0,0));
         }
+        else{
+            opponentLabel.setForeground(new Color(0,0,0));
+        }
         this.add(opponentLabel);
         this.revalidate();
         this.repaint();
