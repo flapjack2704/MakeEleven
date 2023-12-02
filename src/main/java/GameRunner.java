@@ -96,7 +96,7 @@ public class GameRunner {
                     }
 
                     Card picCardPicked = playerHand.getCards().get(picCardChoice-1);
-                    if(picCardPicked.getValue()==10 && !picCardPicked.getRank().equals("10")){
+                    if(picCardPicked.isPictureCard()){
                         playerHand.removeCardFromHand(picCardPicked);
                         System.out.println(picCardPicked + " removed from hand");
                     }
@@ -153,42 +153,22 @@ public class GameRunner {
         if(card.getValue() + computerAdversary.getOpponentCard().getValue() == 11){
             points++;
 
-            int removePicCards = JOptionPane.showConfirmDialog(null,
-                    "Would you like to replace all picture cards?",null, JOptionPane.YES_NO_OPTION);
+            // Check to see if a picture card is in the hand, then ask if user wants it to be replaced
+            for(int i = 0; i<playerHand.getCards().size(); i++){
+                if(playerHand.getCards().get(i).isPictureCard()){
+                    int removePicCards = JOptionPane.showConfirmDialog(null,
+                            "Would you like to replace all picture cards?",null, JOptionPane.YES_NO_OPTION);
 
-            if(removePicCards == 0){  // yes -> 0
-                for(int i = playerHand.getCards().size()-1; i>=0; i--){
-                    if(playerHand.getCards().get(i).getValue()==10
-                            && !playerHand.getCards().get(i).getRank().equals("10")){
-                        removeCardFromHand(playerHand.getCards().get(i));
+                    if(removePicCards == 0){  // yes -> 0
+                        for(int j = playerHand.getCards().size()-1; j>=0; j--){
+                            if(playerHand.getCards().get(j).isPictureCard()){
+                                removeCardFromHand(playerHand.getCards().get(i));
+                            }
+                        }
                     }
-                }
-            }
-
-            /*
-            int picCardChoice = -1;
-            while(true){
-                System.out.println("Select a card to discard, or enter \"0\" to continue");
-                System.out.println("Hand = " + playerHand);
-                picCardChoice = inputInteger(0, playerHand.getCards().size());
-
-                if(picCardChoice == 0){
                     break;
                 }
-
-                Card picCardPicked = playerHand.getCards().get(picCardChoice-1);
-                if(picCardPicked.getValue()==10 && !picCardPicked.getRank().equals("10")){
-                    playerHand.removeCardFromHand(picCardPicked);
-                    System.out.println(picCardPicked + " removed from hand");
-                }
-                else{
-                    System.out.println("That's not a picture card, nice try >:P");
-                }
-
-
-            }//end of picture card discard loop
-
-             */
+            }
 
         }
         else if(card.getSuit().equals(computerAdversary.getOpponentCard().getSuit())){
@@ -216,6 +196,10 @@ public class GameRunner {
 
 
     public int inputInteger(){
+        /*
+            Scanner input validator method for integers
+         */
+
         while(true){
             try{
                 return Integer.parseInt(sc.nextLine());
@@ -227,7 +211,10 @@ public class GameRunner {
     }
 
     public int inputInteger(int min, int max){
-        // inputInteger but with boundaries (min and max are inclusive)
+        /*
+            inputInteger but with boundaries (min and max are inclusive)
+         */
+
         while(true){
             int out = inputInteger();
             if(out >= min && out <= max){

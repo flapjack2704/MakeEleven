@@ -4,11 +4,17 @@ public class Card {
     private String suit;
     private String rank;
     private int value;
+    private boolean isPictureCard;
 
     public Card(String suit, String face, int value){
         this.suit = suit;
         this.rank = face;
         this.value = value;
+        this.isPictureCard = value==10 && !face.equals("10");
+    }
+
+    public boolean isPictureCard(){
+        return isPictureCard;
     }
 
     public Card(){

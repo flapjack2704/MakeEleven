@@ -6,7 +6,7 @@ public class MakeEleven {
 
         //makeEleven.runVisualTests();
 
-        makeEleven.testJavaxStuff();
+        makeEleven.runAsJavaxSwingGUI();
 
         //makeEleven.startGame();
     }
@@ -22,11 +22,10 @@ public class MakeEleven {
         vt.testGenerateDeckAndNewHand();
     }
 
-    private void testJavaxStuff(){
+    private void runAsJavaxSwingGUI(){
         // Run game in a JFrame
         GameRunner gameRunner = new GameRunner();
         GameFrame gf = new GameFrame(gameRunner);
-
     }
 
 

@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 /*
-    Class draws the game graphics
+    Class draws the game screen graphics, using a GameRunner object to keep track of status changes
  */
 
 public class GameFrame extends JFrame implements ActionListener{
@@ -23,11 +23,14 @@ public class GameFrame extends JFrame implements ActionListener{
 
     public GameFrame(GameRunner gameRunner){
         this.gameRunner = gameRunner;
-        drawGameFrame(this.gameRunner);
+        initGameFrame(this.gameRunner);
     }
 
 
-    private void drawGameFrame(GameRunner gameRunner){
+    private void initGameFrame(GameRunner gameRunner){
+        /*
+            Method used in gameFrame constructor to draw all initial necessary parts
+         */
         this.setSize(800,800);
         this.setResizable(false);
         this.setTitle("Make Eleven");
@@ -48,11 +51,14 @@ public class GameFrame extends JFrame implements ActionListener{
     }
 
     private void addSortButtons(){
+        /*
+            Draws sort buttons, used once in GameFrame constructor
+         */
+
         suitSortButton = new JButton();
         suitSortButton.setBounds(26,473, 130,80);
         suitSortButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
         suitSortButton.addActionListener(this);
-
         suitSortButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
         suitSortButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -73,7 +79,6 @@ public class GameFrame extends JFrame implements ActionListener{
         valueSortButton.setBounds(166, 473, 130, 80);
         valueSortButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
         valueSortButton.addActionListener(this);
-
         valueSortButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
         valueSortButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -92,6 +97,10 @@ public class GameFrame extends JFrame implements ActionListener{
     }
 
     private void drawInfoLabel(String info){
+        /*
+            Draws info text box on left-side of GameFrame
+         */
+
         infoLabel = new JLabel();
         infoLabel.setText("<html>" + info + "</html>");  // dynamically fits string inside label
         infoLabel.setBackground(new Color(113, 218, 124));
@@ -102,11 +111,15 @@ public class GameFrame extends JFrame implements ActionListener{
 
         Border blackBorder = BorderFactory.createLineBorder(Color.black, 4);
         infoLabel.setBorder(blackBorder);
-        infoLabel.setBounds(26,95,200,300);
+        infoLabel.setBounds(26,95,250,300);
         this.add(infoLabel);
     }
 
     public void drawPlayerHandPanel(){
+        /*
+            Draws new hand panel, not as clean as I would like it to be
+         */
+
         handPanel.removeAll();
         handPanel.handLabel = new JLabel();
         handPanel.handLabel.setBackground(new Color(88, 154, 96));
@@ -142,12 +155,16 @@ public class GameFrame extends JFrame implements ActionListener{
             handPanel.addButtonToArrayList(button);
         }
         this.add(handPanel);
+
         this.revalidate();
         this.repaint();
-
     }
 
     public void updatePlayerHandPanel(){
+        /*
+            Redraws hand panel without creating whole new panel and label.
+            Gets current GameRunner hand order, and sorts GUI buttons to fit that order
+         */
 
         //sort buttons
         ArrayList<CardButton> newButtonsList = new ArrayList<>();
@@ -166,11 +183,11 @@ public class GameFrame extends JFrame implements ActionListener{
 
         //add new buttons
         ArrayList<CardButton> buttons = handPanel.getButtons();
-        for(int i = 0; i < newButtonsList.size(); i++){
+        for(int i = 0; i < buttons.size(); i++){
             CardButton button = buttons.get(i);
             button.setBounds((i*140)+((handPanel.handLabel.getWidth()/2) - 320), 45, 80, 110);
 
-            // Couldn't set background in CardButton constructor with "this.setBackground()"
+            // Couldn't set background in CardButton constructor with "this.setBackground()", so have to have that here
             button.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -197,8 +214,7 @@ public class GameFrame extends JFrame implements ActionListener{
 
     public void drawPointsLabel(){
         pointsLabel = new JLabel();
-        String points = String.valueOf(gameRunner.getPoints());  // Wouldn't direct cast to string -> needed valueOf()
-        pointsLabel.setText("Points: " + points);
+        pointsLabel.setText("Points: " + gameRunner.getPoints());
         pointsLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
         pointsLabel.setVerticalAlignment(JLabel.CENTER);
         pointsLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -213,11 +229,11 @@ public class GameFrame extends JFrame implements ActionListener{
 
     public void drawDeckSizeLabel(){
         deckSizeLabel = new JLabel();
-        deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
+        deckSizeLabel.setText("Cards left in deck: " + gameRunner.getDeck().getCardsDeck().size());
         deckSizeLabel.setVerticalAlignment(JLabel.CENTER);
         deckSizeLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
         deckSizeLabel.setHorizontalAlignment(JLabel.CENTER);
-        deckSizeLabel.setBounds(26,20, 200, 50);
+        deckSizeLabel.setBounds(26,20, 250, 50);
         deckSizeLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
         deckSizeLabel.setBackground(new Color(42, 150, 4));
         deckSizeLabel.setForeground(new Color(255, 255, 255));
@@ -228,7 +244,11 @@ public class GameFrame extends JFrame implements ActionListener{
 
 
     public void endGameFrame(){
-        this.getContentPane().removeAll();
+        /*
+            Draws end-game screen
+         */
+
+        this.getContentPane().removeAll();  // Removes everything attached to GameFrame
         JLabel endGameLabel = new JLabel();
         endGameLabel.setText("Game over, you scored: " + gameRunner.getPoints());
         endGameLabel.setVerticalAlignment(JLabel.CENTER);
@@ -273,7 +293,7 @@ public class GameFrame extends JFrame implements ActionListener{
         showHighScoreButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                showHighScoreButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+                if(showHighScoreButton.isEnabled()) showHighScoreButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -293,7 +313,7 @@ public class GameFrame extends JFrame implements ActionListener{
         showReplayButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                showReplayButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+                if(showReplayButton.isEnabled()) showReplayButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -306,6 +326,8 @@ public class GameFrame extends JFrame implements ActionListener{
         showHighScoreButton.addActionListener(e -> showHighScoreButtonPressed());
         showReplayButton.addActionListener(e -> showReplayButtonPressed());
 
+        showHighScoreButton.setEnabled(false);
+        showReplayButton.setEnabled(false);
         this.revalidate();
         this.repaint();
     }
@@ -313,28 +335,30 @@ public class GameFrame extends JFrame implements ActionListener{
 
     public void handCardPressed(CardButton button){
         /*
-
+            Custom click ActionEvent method to be added to CardButtons as they are created
          */
+
         button.setEnabled(false);
         Card card = button.getCard();
-        //JOptionPane.showMessageDialog(null, "Card clicked: " + button.getCard());
         gameRunner.removeCardFromHand(card);
-
 
         // Check to see if we made eleven, or have the same suit, or if it's game over
         if(gameRunner.checkSelectedCard(card)){
             pointsLabel.setText("Points: " + gameRunner.getPoints());
+            deckSizeLabel.setText("Cards left in deck: " + gameRunner.getDeck().getCardsDeck().size());
 
-            deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
+            // Darken text colour as the value decreases
             if(gameRunner.getDeck().getCardsDeck().size() <= 6){
-                deckSizeLabel.setForeground(new Color(253, 56, 56));
+                deckSizeLabel.setForeground(new Color(255, 16, 16));
             }
-            else if(gameRunner.getDeck().getCardsDeck().size() <= 12){
+            else if(gameRunner.getDeck().getCardsDeck().size() <= 13){
+                deckSizeLabel.setForeground(new Color(255, 122, 122));
+            }
+            else if(gameRunner.getDeck().getCardsDeck().size() <= 20){
                 deckSizeLabel.setForeground(new Color(255, 176, 176));
             }
 
             opponentPanel.updateOpponentLabel(gameRunner);
-
             drawPlayerHandPanel();
         }
         else{
@@ -345,7 +369,7 @@ public class GameFrame extends JFrame implements ActionListener{
     public void restartGameButtonPressed(){
         gameRunner = new GameRunner();
         this.getContentPane().removeAll();
-        this.drawGameFrame(gameRunner);
+        this.initGameFrame(gameRunner);
         this.revalidate();
         this.repaint();
     }
