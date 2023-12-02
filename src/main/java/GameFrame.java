@@ -14,15 +14,20 @@ public class GameFrame extends JFrame implements ActionListener{
 
     private JButton suitSortButton;
     private JButton valueSortButton;
-    private static GameRunner gameRunner;
-    private static HandPanel handPanel;
-    private static OpponentPanel opponentPanel;
+    private GameRunner gameRunner;
+    private HandPanel handPanel;
+    private OpponentPanel opponentPanel;
     private JLabel infoLabel;
-    private static JLabel pointsLabel;
-    private static JLabel deckSizeLabel;
+    private JLabel pointsLabel;
+    private JLabel deckSizeLabel;
 
     public GameFrame(GameRunner gameRunner){
-        GameFrame.gameRunner = gameRunner;
+        this.gameRunner = gameRunner;
+        drawGameFrame(this.gameRunner);
+    }
+
+
+    private void drawGameFrame(GameRunner gameRunner){
         this.setSize(800,800);
         this.setResizable(false);
         this.setTitle("Make Eleven");
@@ -31,7 +36,9 @@ public class GameFrame extends JFrame implements ActionListener{
         this.setLayout(null);
 
         this.addSortButtons();
-        this.drawInfoLabel("Pick a card to make 11 with the opponent's card");
+        this.drawInfoLabel("Pick a card to make 11 with the opponent's card. <br><br>" +
+                "If you make 11, you may choose to remove all picture cards from your hand. <br><br>" +
+                "If you cannot make 11, you can select a card of the same suit, but you won't score a point.");
         handPanel = new HandPanel(gameRunner);
         this.drawPlayerHandPanel();
         this.initOpponentPanel();
@@ -42,7 +49,7 @@ public class GameFrame extends JFrame implements ActionListener{
 
     private void addSortButtons(){
         suitSortButton = new JButton();
-        suitSortButton.setBounds(20,450, 130,80);
+        suitSortButton.setBounds(26,473, 130,80);
         suitSortButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
         suitSortButton.addActionListener(this);
 
@@ -63,7 +70,7 @@ public class GameFrame extends JFrame implements ActionListener{
         this.add(suitSortButton);
 
         valueSortButton = new JButton();
-        valueSortButton.setBounds(160, 450, 130, 80);
+        valueSortButton.setBounds(166, 473, 130, 80);
         valueSortButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
         valueSortButton.addActionListener(this);
 
@@ -93,9 +100,9 @@ public class GameFrame extends JFrame implements ActionListener{
         infoLabel.setVerticalAlignment(JLabel.TOP);
         infoLabel.setHorizontalAlignment(JLabel.CENTER);
 
-        Border blackBorder = BorderFactory.createLineBorder(Color.black, 6);
+        Border blackBorder = BorderFactory.createLineBorder(Color.black, 4);
         infoLabel.setBorder(blackBorder);
-        infoLabel.setBounds(10,80,200,300);
+        infoLabel.setBounds(26,95,200,300);
         this.add(infoLabel);
     }
 
@@ -109,14 +116,14 @@ public class GameFrame extends JFrame implements ActionListener{
 
         Border blackBorder = BorderFactory.createLineBorder(Color.black, 6);
         handPanel.handLabel.setBorder(blackBorder);
-        handPanel.handLabel.setBounds(6,0,776,200);
+        handPanel.handLabel.setBounds(16,0,756,200);
         handPanel.add(handPanel.handLabel);
 
         // initialise hand buttons
         for(int i = 0; i < gameRunner.getPlayerHand().getCards().size(); i++){
             Card card = gameRunner.getPlayerHand().getCards().get(i);
             CardButton button = new CardButton(card);
-            button.setBounds((i*150)+((handPanel.handLabel.getWidth()/2) - 340), 45, 80, 110);
+            button.setBounds((i*140)+((handPanel.handLabel.getWidth()/2) - 320), 45, 80, 110);
 
             // Couldn't set background in CardButton constructor with "this.setBackground()"
             button.addMouseListener(new MouseAdapter() {
@@ -161,7 +168,7 @@ public class GameFrame extends JFrame implements ActionListener{
         ArrayList<CardButton> buttons = handPanel.getButtons();
         for(int i = 0; i < newButtonsList.size(); i++){
             CardButton button = buttons.get(i);
-            button.setBounds((i*150)+((handPanel.handLabel.getWidth()/2) - 340), 45, 80, 110);
+            button.setBounds((i*140)+((handPanel.handLabel.getWidth()/2) - 320), 45, 80, 110);
 
             // Couldn't set background in CardButton constructor with "this.setBackground()"
             button.addMouseListener(new MouseAdapter() {
@@ -195,7 +202,7 @@ public class GameFrame extends JFrame implements ActionListener{
         pointsLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
         pointsLabel.setVerticalAlignment(JLabel.CENTER);
         pointsLabel.setHorizontalAlignment(JLabel.CENTER);
-        pointsLabel.setBounds(600,450,180,80);
+        pointsLabel.setBounds(590,450,180,80);
         pointsLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
         pointsLabel.setBackground(new Color(42, 150, 4));
         pointsLabel.setForeground(new Color(255, 255, 255));
@@ -210,7 +217,7 @@ public class GameFrame extends JFrame implements ActionListener{
         deckSizeLabel.setVerticalAlignment(JLabel.CENTER);
         deckSizeLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
         deckSizeLabel.setHorizontalAlignment(JLabel.CENTER);
-        deckSizeLabel.setBounds(10,10, 200, 50);
+        deckSizeLabel.setBounds(26,20, 200, 50);
         deckSizeLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
         deckSizeLabel.setBackground(new Color(42, 150, 4));
         deckSizeLabel.setForeground(new Color(255, 255, 255));
@@ -227,13 +234,78 @@ public class GameFrame extends JFrame implements ActionListener{
         endGameLabel.setVerticalAlignment(JLabel.CENTER);
         endGameLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
         endGameLabel.setHorizontalAlignment(JLabel.CENTER);
-        endGameLabel.setBounds(100,90, 600, 600);
-        endGameLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        endGameLabel.setBounds(100,70, 600, 320);
+        endGameLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
         endGameLabel.setBackground(new Color(42, 150, 4));
         endGameLabel.setForeground(new Color(255, 255, 255));
         endGameLabel.setOpaque(true);
 
         this.add(endGameLabel);
+
+        JButton restartGameButton = new JButton();
+        restartGameButton.setText("Restart Game");
+        restartGameButton.setFont(new Font("Helvetica", Font.BOLD, 17));
+        restartGameButton.setOpaque(true);
+        restartGameButton.setBounds(160, 450, 130, 80);
+        restartGameButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
+        restartGameButton.setFocusable(false);
+        restartGameButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
+        restartGameButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                restartGameButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                restartGameButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
+            }
+        });
+        this.add(restartGameButton);
+
+        JButton showHighScoreButton = new JButton();
+        showHighScoreButton.setText("High Scores");
+        showHighScoreButton.setFont(new Font("Helvetica", Font.BOLD, 17));
+        showHighScoreButton.setOpaque(true);
+        showHighScoreButton.setBounds(335, 450, 130, 80);
+        showHighScoreButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
+        showHighScoreButton.setFocusable(false);
+        showHighScoreButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
+        showHighScoreButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                showHighScoreButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                showHighScoreButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
+            }
+        });
+        this.add(showHighScoreButton);
+
+        JButton showReplayButton = new JButton();
+        showReplayButton.setText("Show Replay");
+        showReplayButton.setFont(new Font("Helvetica", Font.BOLD, 17));
+        showReplayButton.setOpaque(true);
+        showReplayButton.setBounds(510, 450, 130, 80);
+        showReplayButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
+        showReplayButton.setFocusable(false);
+        showReplayButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
+        showReplayButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                showReplayButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                showReplayButton.setBackground(CardButton.DEFAULT_BUTTON_COLOUR);
+            }
+        });
+        this.add(showReplayButton);
+
+        restartGameButton.addActionListener(e -> restartGameButtonPressed());
+        showHighScoreButton.addActionListener(e -> showHighScoreButtonPressed());
+        showReplayButton.addActionListener(e -> showReplayButtonPressed());
+
         this.revalidate();
         this.repaint();
     }
@@ -245,21 +317,43 @@ public class GameFrame extends JFrame implements ActionListener{
          */
         button.setEnabled(false);
         Card card = button.getCard();
-        Card opponentCard = gameRunner.getOpponentCard();
-        JOptionPane.showMessageDialog(null, "Card clicked: " + button.getText());
+        //JOptionPane.showMessageDialog(null, "Card clicked: " + button.getCard());
         gameRunner.removeCardFromHand(card);
 
 
-        //If opponent card hasn't changed, it means we ran out of cards in the deck
+        // Check to see if we made eleven, or have the same suit, or if it's game over
         if(gameRunner.checkSelectedCard(card)){
             pointsLabel.setText("Points: " + gameRunner.getPoints());
+
             deckSizeLabel.setText("Cards in deck: " + gameRunner.getDeck().getCardsDeck().size());
+            if(gameRunner.getDeck().getCardsDeck().size() <= 6){
+                deckSizeLabel.setForeground(new Color(253, 56, 56));
+            }
+            else if(gameRunner.getDeck().getCardsDeck().size() <= 12){
+                deckSizeLabel.setForeground(new Color(255, 176, 176));
+            }
+
             opponentPanel.updateOpponentLabel(gameRunner);
+
             drawPlayerHandPanel();
         }
         else{
             endGameFrame();
         }
+    }
+
+    public void restartGameButtonPressed(){
+        gameRunner = new GameRunner();
+        this.getContentPane().removeAll();
+        this.drawGameFrame(gameRunner);
+        this.revalidate();
+        this.repaint();
+    }
+    public void showHighScoreButtonPressed(){
+        //todo Add high score button function
+    }
+    public void showReplayButtonPressed(){
+        //todo Add show replay button function
     }
 
     @Override

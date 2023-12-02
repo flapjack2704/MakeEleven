@@ -1,5 +1,8 @@
 package main.java;
 
+/*
+
+ */
 public class Opponent {
     public Card getOpponentCard() {
         return opponentCard;

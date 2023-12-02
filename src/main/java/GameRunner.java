@@ -1,5 +1,6 @@
 package main.java;
 
+import javax.swing.*;
 import java.util.Scanner;
 
 /*
@@ -37,7 +38,8 @@ public class GameRunner {
         return points;
     }
 
-    public void runGame(){
+
+    public void runGameAsConsoleApp(){
 
         /*
             The while loop here is the basic game loop, i.e it breaks when it is "game over"
@@ -134,7 +136,7 @@ public class GameRunner {
     }
 
 
-
+//---------------------------------------------------------------------------//
 
     public void sortHandBySuit(){
         playerHand.sortHandBySuit();
@@ -142,15 +144,27 @@ public class GameRunner {
     public void sortHandByValue(){
         playerHand.sortHandByValue();
     }
-    public void removeCardFromHand(Card card) {playerHand.removeCardFromHand(card);}
-
+    public void removeCardFromHand(Card card) {
+        playerHand.removeCardFromHand(card);
+    }
 
 
     public boolean checkSelectedCard(Card card){
         if(card.getValue() + computerAdversary.getOpponentCard().getValue() == 11){
             points++;
 
-            System.out.println("\nYou may also discard any picture cards you have");
+            int removePicCards = JOptionPane.showConfirmDialog(null,
+                    "Would you like to replace all picture cards?",null, JOptionPane.YES_NO_OPTION);
+
+            if(removePicCards == 0){  // yes -> 0
+                for(int i = playerHand.getCards().size()-1; i>=0; i--){
+                    if(playerHand.getCards().get(i).getValue()==10
+                            && !playerHand.getCards().get(i).getRank().equals("10")){
+                        removeCardFromHand(playerHand.getCards().get(i));
+                    }
+                }
+            }
+
             /*
             int picCardChoice = -1;
             while(true){
@@ -190,7 +204,7 @@ public class GameRunner {
         }
 
         if(deck.getCardsDeck().size()==0){
-            System.out.println("Bloody hell, the deck is out of cards, you did well staying in that long!");
+            //System.out.println("Bloody hell, the deck is out of cards, you did well staying in that long!");
             return false;
         }  // No sense ending the game when we have an empty deck BUT have a card everywhere else it needs to be
 
@@ -202,7 +216,6 @@ public class GameRunner {
 
 
     public int inputInteger(){
-
         while(true){
             try{
                 return Integer.parseInt(sc.nextLine());
@@ -215,7 +228,6 @@ public class GameRunner {
 
     public int inputInteger(int min, int max){
         // inputInteger but with boundaries (min and max are inclusive)
-
         while(true){
             int out = inputInteger();
             if(out >= min && out <= max){

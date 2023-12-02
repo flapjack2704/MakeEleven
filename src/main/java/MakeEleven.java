@@ -1,9 +1,5 @@
 package main.java;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-
 public class MakeEleven {
     public static void main(String[] args) {
         MakeEleven makeEleven = new MakeEleven();
@@ -18,7 +14,7 @@ public class MakeEleven {
     private void startGame(){
         // Run game as a CLI
         GameRunner gameRunner = new GameRunner();
-        gameRunner.runGame();
+        gameRunner.runGameAsConsoleApp();
     }
 
     private void runVisualTests(){

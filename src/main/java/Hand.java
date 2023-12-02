@@ -44,8 +44,8 @@ public class Hand {
             boolean[] flags = new boolean[4];  // if all gets filled as true, break loop
 
             for(int k = 0; k < cards.size()-1; k++){
-                if(Deck.ALL_RANKSLIST.indexOf(cards.get(k).getRank())
-                        > Deck.ALL_RANKSLIST.indexOf(cards.get(k+1).getRank())){
+                if(Deck.ALL_RANKS_LIST.indexOf(cards.get(k).getRank())
+                        > Deck.ALL_RANKS_LIST.indexOf(cards.get(k+1).getRank())){
                     Card temp = cards.get(k);
                     cards.set(k, cards.get(k+1));
                     cards.set(k+1, temp);
@@ -55,7 +55,7 @@ public class Hand {
                 }
             }
 
-            if(flags[0]&&flags[1]&&flags[2]&&flags[3]) break;
+            if(flags[0] && flags[1] && flags[2] && flags[3]) break;
         }
     }
     public void sortHandBySuit(){
@@ -65,8 +65,8 @@ public class Hand {
             boolean[] flags = new boolean[4];  // if all gets filled as true, break loop
 
             for(int k = 0; k < cards.size()-1; k++){
-                if(Deck.ALL_SUITSLIST.indexOf(cards.get(k).getSuit())
-                        > Deck.ALL_SUITSLIST.indexOf(cards.get(k+1).getSuit())){
+                if(Deck.ALL_SUITS_LIST.indexOf(cards.get(k).getSuit())
+                        > Deck.ALL_SUITS_LIST.indexOf(cards.get(k+1).getSuit())){
                     Card temp = cards.get(k);
                     cards.set(k, cards.get(k+1));
                     cards.set(k+1, temp);
@@ -76,7 +76,7 @@ public class Hand {
                 }
             }
 
-            if(flags[0]&&flags[1]&&flags[2]&&flags[3]) break;
+            if(flags[0] && flags[1] && flags[2] && flags[3]) break;
         }
     }
 

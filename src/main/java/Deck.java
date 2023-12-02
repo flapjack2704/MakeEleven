@@ -9,8 +9,8 @@ public class Deck {
     public static final int[] ALL_VALUES = {1,2,3,4,5,6,7,8,9,10,10,10,10};
     public static final String[] ALL_SUITS = {"♣", "♦", "♥", "♠"};
     public static final String[] ALL_RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    public static final ArrayList<String> ALL_SUITSLIST = new ArrayList<>(Arrays.asList(ALL_SUITS));
-    public static final ArrayList<String> ALL_RANKSLIST = new ArrayList<>(Arrays.asList(ALL_RANKS));
+    public static final ArrayList<String> ALL_SUITS_LIST = new ArrayList<>(Arrays.asList(ALL_SUITS));
+    public static final ArrayList<String> ALL_RANKS_LIST = new ArrayList<>(Arrays.asList(ALL_RANKS));
 
     public Deck(){
         for(String suit : ALL_SUITS){

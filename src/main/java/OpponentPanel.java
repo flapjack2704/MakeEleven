@@ -1,17 +1,32 @@
 package main.java;
 
+import com.sun.jdi.PrimitiveValue;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
 public class OpponentPanel extends JPanel {
     private JLabel opponentLabel;
+    private JLabel opponentNameLabel;
     public OpponentPanel(GameRunner gameRunner){
         this.setLayout(null);
         this.setBackground(new Color(42, 150, 4));
-        this.setBounds(450, 20, 300, 200);
+        this.setBounds(400, 20, 350, 240);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 7));
         this.drawOpponentLabel(gameRunner);
+        this.drawOpponentNameLabel();
+    }
+
+    public void drawOpponentNameLabel(){
+        opponentNameLabel = new JLabel();
+        opponentNameLabel.setBounds(50, 170, 250, 50);
+        opponentNameLabel.setFont(new Font("Garamond", Font.BOLD, 30));
+        opponentNameLabel.setText("Opponent's card");
+        opponentNameLabel.setVerticalAlignment(JLabel.CENTER);
+        opponentNameLabel.setHorizontalAlignment(JLabel.CENTER);
+        opponentNameLabel.setForeground(new Color(255, 255, 255));
+        this.add(opponentNameLabel);
     }
 
     public void drawOpponentLabel(GameRunner gameRunner){
@@ -28,9 +43,9 @@ public class OpponentPanel extends JPanel {
 
         Border blackBorder = BorderFactory.createLineBorder(Color.black, 5);
         opponentLabel.setBorder(blackBorder);
-        opponentLabel.setBackground(new Color(239, 239, 239));
+        opponentLabel.setBackground(new Color(255, 255, 255));
         opponentLabel.setOpaque(true);
-        opponentLabel.setBounds(50,45,80,110);
+        opponentLabel.setBounds(135,45,80,110);
 
         this.add(opponentLabel);
 
@@ -48,6 +63,8 @@ public class OpponentPanel extends JPanel {
             opponentLabel.setForeground(new Color(0,0,0));
         }
         this.add(opponentLabel);
+
+        this.drawOpponentNameLabel();
         this.revalidate();
         this.repaint();
     }

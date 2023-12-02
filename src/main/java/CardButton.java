@@ -6,8 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CardButton extends JButton {
-    public static final Color DEFAULT_BUTTON_COLOUR = new Color(232, 232, 232);
-    public static final Color HOVERED_BUTTON_COLOUR = new Color(185, 184, 184);
+    public static final Color DEFAULT_BUTTON_COLOUR = new Color(255, 255, 255);
+    public static final Color HOVERED_BUTTON_COLOUR = new Color(197, 197, 197);
 
     private Card card;
 
