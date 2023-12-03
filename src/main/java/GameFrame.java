@@ -39,9 +39,10 @@ public class GameFrame extends JFrame implements ActionListener{
         this.setLayout(null);
 
         this.addSortButtons();
-        this.drawInfoLabel("Pick a card to make 11 with the opponent's card. <br><br>" +
-                "If you make 11, you may choose to remove all picture cards from your hand. <br><br>" +
-                "If you cannot make 11, you can select a card of the same suit, but you won't score a point.");
+        this.drawInfoLabel("Pick a card to make 11 with the opponent's card.<br><br>" +
+                "If you make 11, you may choose to remove all picture cards from your hand.<br><br>" +
+                "If you cannot make 11, you can select a card of the same suit, but you won't score a point.<br><br>" +
+                "If you can't even match the suit, it is game over!");
         handPanel = new HandPanel(gameRunner);
         this.drawPlayerHandPanel();
         this.initOpponentPanel();
@@ -102,7 +103,8 @@ public class GameFrame extends JFrame implements ActionListener{
          */
 
         infoLabel = new JLabel();
-        infoLabel.setText("<html>" + info + "</html>");  // dynamically fits string inside label
+        // https://docs.oracle.com/javase/tutorial/uiswing/components/html.html
+        infoLabel.setText("<html>" + info + "</html>");  // html tags dynamically fits string inside label
         infoLabel.setBackground(new Color(113, 218, 124));
         infoLabel.setFont(new Font("Helvetica", Font.BOLD, 16));
         infoLabel.setOpaque(true);  // needed to show background colour
@@ -111,7 +113,7 @@ public class GameFrame extends JFrame implements ActionListener{
 
         Border blackBorder = BorderFactory.createLineBorder(Color.black, 4);
         infoLabel.setBorder(blackBorder);
-        infoLabel.setBounds(26,95,250,300);
+        infoLabel.setBounds(26,95,250,310);
         this.add(infoLabel);
     }
 
@@ -218,7 +220,7 @@ public class GameFrame extends JFrame implements ActionListener{
         pointsLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
         pointsLabel.setVerticalAlignment(JLabel.CENTER);
         pointsLabel.setHorizontalAlignment(JLabel.CENTER);
-        pointsLabel.setBounds(590,450,180,80);
+        pointsLabel.setBounds(592,473,180,80);
         pointsLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
         pointsLabel.setBackground(new Color(42, 150, 4));
         pointsLabel.setForeground(new Color(255, 255, 255));

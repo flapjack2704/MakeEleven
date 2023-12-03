@@ -6,12 +6,12 @@ public class MakeEleven {
 
         //makeEleven.runVisualTests();
 
-        makeEleven.runAsJavaxSwingGUI();
+        //makeEleven.runAsJavaxSwingGUI();
 
-        //makeEleven.startGame();
+        makeEleven.runConsoleGame();
     }
 
-    private void startGame(){
+    private void runConsoleGame(){
         // Run game as a CLI
         GameRunner gameRunner = new GameRunner();
         gameRunner.runGameAsConsoleApp();

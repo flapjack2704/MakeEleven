@@ -1,6 +1,8 @@
 package main.java;
 
 import javax.swing.*;
+import java.io.*;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 /*
@@ -13,6 +15,7 @@ public class GameRunner {
     private Hand playerHand;
     private Opponent computerAdversary;
     private int points;
+    private LinkedHashMap<String, Integer> highscoreMap;
 
     public GameRunner(){
         deck = new Deck();
@@ -20,6 +23,8 @@ public class GameRunner {
         computerAdversary = new Opponent();
         computerAdversary.setOpponentCard(deck.pickCardFromTop());
         points = 0;
+        highscoreMap = generateHighscoreMap();
+        writeHighscoreMapToFile();
     }
 
     public Deck getDeck() {
@@ -131,7 +136,7 @@ public class GameRunner {
 
         System.out.println("gg ez, game ended with: " + points + " points.");
 
-
+        //System.out.println(highscoreMap);
 
     }
 
@@ -193,7 +198,53 @@ public class GameRunner {
     }
 
 
+    public LinkedHashMap<String, Integer> generateHighscoreMap(){
+        /*
+            Read highscore file to populate highscore map
+         */
 
+        // Normal HashMap didn't keep scores in order, whereas the linked map does keep order
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+        try{
+            File file = new File("src/data/highscores.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();  // reads commented line in file + ignores
+            while((line = reader.readLine()) != null){
+                String[] array = line.split(",");
+                map.put(array[0], Integer.parseInt(array[1]));
+            }
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found...");
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    public void writeHighscoreMapToFile(){
+
+
+        try{
+            File file = new File("src/data/highscores.txt");
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+            writer.println("#username, score");
+
+            String[] usernames = highscoreMap.keySet().toArray(new String[0]);
+            for(int i = 0; i<highscoreMap.size(); i++){
+                writer.println(usernames[i] + "," + highscoreMap.get(usernames[i]));  // username,score
+            }
+            writer.close();
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found...");
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
 
     public int inputInteger(){
         /*
