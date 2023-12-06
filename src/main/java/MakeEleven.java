@@ -6,9 +6,9 @@ public class MakeEleven {
 
         //makeEleven.runVisualTests();
 
-        makeEleven.runAsJavaxSwingGUI();
+        //makeEleven.runAsJavaxSwingGUI();
 
-        //makeEleven.runConsoleGame();
+        makeEleven.runConsoleGame();
     }
 
     private void runConsoleGame(){

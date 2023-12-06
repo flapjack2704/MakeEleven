@@ -2,8 +2,6 @@ package main.java;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class CardButton extends JButton {
     public static final Color DEFAULT_BUTTON_COLOUR = new Color(255, 255, 255);

@@ -55,7 +55,6 @@ public class GameRunner {
             Card cardChosen = new Card();
             System.out.println("------------------------------------------------------------------------");
             System.out.println("Current score: " + points);
-            replayHandler.writeLineToReplayFile("------------------------------------------------------------------------");
             replayHandler.writeLineToReplayFile("Current score: " + points);
             replayHandler.writeLineToReplayFile("Deck cards left: " + deck.getCardsDeck().size());
             replayHandler.writeLineToReplayFile("Your hand: " + playerHand);
@@ -150,6 +149,8 @@ public class GameRunner {
             }  // No sense ending the game when we have an empty deck BUT have a card everywhere else it needs to be
 
             computerAdversary.setOpponentCard(deck.pickCardFromTop());
+            replayHandler.writeLineToReplayFile(
+                    "------------------------------------------------------------------------");
 
         }//end of main game loop
 
