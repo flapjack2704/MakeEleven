@@ -1,8 +1,9 @@
 -------------------------------- Replay --------------------------------
 Current score: 0
 Deck cards left: 46
-Your hand: (1) 7♦, (2) 4♥, (3) 2♣, (4) Q♣, (5) 2♦
-Computer's card: 4♦
+Your hand: (1) 7♥, (2) 3♠, (3) K♠, (4) 7♣, (5) 4♥
+Computer's card: 9♣
 Card chosen: 4♥
+You didn't make Eleven, and the suit didn't match. Therefore it is game over
+ggwp, game ended with: 0 points.
 ------------------------------------------------------------------------
-gg ez, game ended with: 0 points.

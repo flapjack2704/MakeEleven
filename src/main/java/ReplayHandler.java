@@ -1,17 +1,18 @@
 package main.java;
 
+import javax.swing.*;
 import java.io.*;
 
 public class ReplayHandler {
-    File replayFile;
-    PrintWriter writer;
-    PrintWriter appendingWriter;
+    private final File replayFile;
+    private PrintWriter nonAppendingWriter;
+    private PrintWriter appendingWriter;
 
     public ReplayHandler(){
         replayFile = new File("src/data/replayFile.txt");
         try{
             appendingWriter = new PrintWriter(new BufferedWriter(new FileWriter(replayFile, true)));
-            writer = new PrintWriter(new BufferedWriter(new FileWriter(replayFile)));
+            nonAppendingWriter = new PrintWriter(new BufferedWriter(new FileWriter(replayFile)));
         }
         catch (FileNotFoundException e){
             System.out.println("Replay file not found...");
@@ -28,8 +29,8 @@ public class ReplayHandler {
     }
 
     public void wipeReplayFile(){
-        writer.print("-------------------------------- Replay --------------------------------\n");
-        writer.flush();
+        nonAppendingWriter.print("-------------------------------- Replay --------------------------------\n");
+        nonAppendingWriter.flush();
     }
 
     public void playReplay(){
@@ -39,6 +40,30 @@ public class ReplayHandler {
             while((line = reader.readLine()) != null){
                 System.out.println(line);
             }
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found...");
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    //-----------------------------------------GUI version methods--------------------------------------//
+
+
+    public void playGuiReplay(){
+        //todo Display frame array somehow
+        try{
+            BufferedReader reader= new BufferedReader(new FileReader(replayFile));
+            String out = "";
+            String line = "";
+            while((line = reader.readLine()) != null){
+                out += line + "\n";
+            }
+
+            JOptionPane.showMessageDialog(null, out);
         }
         catch (FileNotFoundException e){
             System.out.println("File not found...");

@@ -26,6 +26,8 @@ public class GameFrame extends JFrame implements ActionListener{
         initGameFrame(this.gameRunner);
     }
 
+    public GameFrame(){}
+
 
     private void initGameFrame(GameRunner gameRunner){
         /*
@@ -49,6 +51,8 @@ public class GameFrame extends JFrame implements ActionListener{
         this.drawPointsLabel();
         this.drawDeckSizeLabel();
         this.setVisible(true);
+
+        gameRunner.writeGameStatusToReplayFile();
     }
 
     private void addSortButtons(){
@@ -329,7 +333,6 @@ public class GameFrame extends JFrame implements ActionListener{
         showReplayButton.addActionListener(e -> showReplayButtonPressed());
 
         showHighScoreButton.setEnabled(false);
-        showReplayButton.setEnabled(false);
         this.revalidate();
         this.repaint();
     }
@@ -380,6 +383,7 @@ public class GameFrame extends JFrame implements ActionListener{
     }
     public void showReplayButtonPressed(){
         //todo Add show replay button function
+        gameRunner.showReplay();
     }
 
     @Override

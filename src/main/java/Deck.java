@@ -59,7 +59,7 @@ public class Deck {
             cardsDeck.remove(cardToPick);
         }
         catch(Exception ignoreMe){
-
+            // catches empty deck access
         }
 
         return cardToPick;

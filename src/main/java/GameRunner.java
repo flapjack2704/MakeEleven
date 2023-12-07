@@ -115,8 +115,9 @@ public class GameRunner {
                     Card picCardPicked = playerHand.getCards().get(picCardChoice-1);
                     if(picCardPicked.isPictureCard()){
                         playerHand.removeCardFromHand(picCardPicked);
-                        System.out.println(picCardPicked + " removed from hand");
-                        replayHandler.writeLineToReplayFile(picCardPicked + " removed from hand");
+                        System.out.println("Picture card " + picCardPicked + " removed from hand");
+                        replayHandler.writeLineToReplayFile(
+                                "Picture card " + picCardPicked + " removed from hand");
 
                     }
                     else{
@@ -132,7 +133,12 @@ public class GameRunner {
                 replayHandler.writeLineToReplayFile(
                         "You didn't make Eleven, but at least it was the same suit so we carry on...");
             }
-            else break;
+            else{
+                System.out.println("You didn't make Eleven, and the suit didn't match. Therefore it is game over");
+                replayHandler.writeLineToReplayFile(
+                        "You didn't make Eleven, and the suit didn't match. Therefore it is game over");
+                break;
+            }
 
 
 
@@ -155,10 +161,11 @@ public class GameRunner {
         }//end of main game loop
 
         System.out.println("------------------------------------------------------------------------");
-        System.out.println("gg ez, game ended with: " + points + " points.");
+        System.out.println("ggwp, game ended with: " + points + " points.");
         replayHandler.writeLineToReplayFile(
                 "------------------------------------------------------------------------");
-        replayHandler.writeLineToReplayFile("gg ez, game ended with: " + points + " points.");
+        replayHandler.writeLineToReplayFile(
+                "ggwp, game ended with: " + points + " points.");
 
         checkForHighscore();
         writeHighscoreMapToFile();
@@ -182,17 +189,11 @@ public class GameRunner {
 
         // Check if highscore map is full or not, and add new entry accordingly
         if(highscoreMap.size() < 5){
-            //todo sanitise input
-            System.out.println("New high score!");
-            System.out.println("Enter your name to be added to the highscore table");
-            String name = sc.nextLine();
+            String name = inputUsername();
             highscoreMap.put(name, points);
         }
         else if(points >= highscoreMap.lastEntry().getValue()){
-            //todo sanitise input
-            System.out.println("New high score!");
-            System.out.println("Enter your name to be added to the highscore table");
-            String name = sc.nextLine();
+            String name = inputUsername();
 
             highscoreMap.remove(highscoreMap.lastEntry().getKey());
             highscoreMap.put(name, points);
@@ -204,6 +205,18 @@ public class GameRunner {
                     forEach(entry -> tempMap.put(entry.getKey(), entry.getValue()));
             highscoreMap = tempMap;
 
+        }
+    }
+
+    private String inputUsername(){
+        System.out.println("New high score! Enter your name to be added to the highscore table.");
+        while(true){
+            System.out.println("Please do not include any commas in the username (\",\")");
+            String input = sc.nextLine();
+
+            if(input.indexOf(',') != -1) continue;
+            if(input.equals("")) continue;
+            return input;
         }
     }
 
@@ -299,9 +312,21 @@ public class GameRunner {
 
     //-----------------------------------------GUI version methods--------------------------------------//
 
+    public void writeGameStatusToReplayFile(){
+        replayHandler.writeLineToReplayFile("Current score: " + points);
+        replayHandler.writeLineToReplayFile("Deck cards left: " + deck.getCardsDeck().size());
+        replayHandler.writeLineToReplayFile("Your hand: " + playerHand);
+        replayHandler.writeLineToReplayFile("Computer's card: " + computerAdversary.getOpponentCard());
+    }
+
     public boolean checkSelectedCard(Card card){
+
+        replayHandler.writeLineToReplayFile("Card chosen: " + card);
+
         if(card.getValue() + computerAdversary.getOpponentCard().getValue() == 11){
             points++;
+            replayHandler.writeLineToReplayFile(
+                    "You made Eleven with " + card + " + " + computerAdversary.getOpponentCard());
 
             // Check to see if a picture card is in the hand, then ask if user wants it to be replaced
             for(int i = 0; i<playerHand.getCards().size(); i++){
@@ -312,6 +337,8 @@ public class GameRunner {
                     if(removePicCards == 0){  // yes -> 0
                         for(int j = playerHand.getCards().size()-1; j>=0; j--){
                             if(playerHand.getCards().get(j).isPictureCard()){
+                                replayHandler.writeLineToReplayFile(
+                                        "Picture card " + playerHand.getCards().get(i) + " removed from hand");
                                 removeCardFromHand(playerHand.getCards().get(i));
                             }
                         }
@@ -322,36 +349,63 @@ public class GameRunner {
 
         }
         else if(card.getSuit().equals(computerAdversary.getOpponentCard().getSuit())){
-            // Maybe add some text pop-up for suit match
+            replayHandler.writeLineToReplayFile(
+                    "You didn't make Eleven, but at least it was the same suit so we carry on...");
         }
         else{
+            replayHandler.writeLineToReplayFile(
+                    "You didn't make Eleven, and the suit didn't match. Therefore it is game over");
+            replayHandler.writeLineToReplayFile(
+                    "ggwp, game ended with: " + points + " points.");
+            replayHandler.writeLineToReplayFile(
+                    "------------------------------------------------------------------------");
             return false;
         }
 
+        replayHandler.writeLineToReplayFile(
+                "------------------------------------------------------------------------");
 
+        // Repopulate hand
         while(playerHand.getCards().size() != 5){
             playerHand.addCardToHand(deck.pickCardFromTop());
         }
 
         if(deck.getCardsDeck().isEmpty()){
-            //System.out.println("Bloody hell, the deck is out of cards, you did well staying in that long!");
+            replayHandler.writeLineToReplayFile(
+                    "Bloody hell, the deck is out of cards, you did well staying in that long!");
+            replayHandler.writeLineToReplayFile(
+                    "ggwp, game ended with: " + points + " points.");
+            replayHandler.writeLineToReplayFile(
+                    "------------------------------------------------------------------------");
             return false;
         }  // No sense ending the game when we have an empty deck BUT have a card everywhere else it needs to be
 
         computerAdversary.setOpponentCard(deck.pickCardFromTop());
+
+        replayHandler.writeLineToReplayFile("Current score: " + points);
+        replayHandler.writeLineToReplayFile("Deck cards left: " + deck.getCardsDeck().size());
+        replayHandler.writeLineToReplayFile("Your hand: " + playerHand);
+        replayHandler.writeLineToReplayFile("Computer's card: " + computerAdversary.getOpponentCard());
+
         return true;
     }
 
     public void sortHandBySuit(){
         playerHand.sortHandBySuit();
+        replayHandler.writeLineToReplayFile("Hand sorted by suit");
+        replayHandler.writeLineToReplayFile("New hand: " + playerHand);
     }
     public void sortHandByValue(){
         playerHand.sortHandByValue();
+        replayHandler.writeLineToReplayFile("Hand sorted by value");
+        replayHandler.writeLineToReplayFile("New hand: " + playerHand);
     }
     public void removeCardFromHand(Card card) {
         playerHand.removeCardFromHand(card);
     }
 
-
+    public void showReplay(){
+        replayHandler.playGuiReplay();
+    }
 
 }
