@@ -1,7 +1,6 @@
 package main.java;
 
 import javax.swing.*;
-import java.io.*;
 import java.util.*;
 
 /*
@@ -9,13 +8,13 @@ import java.util.*;
     i.e keeping track of cards in deck+hand+opponent, points ...
  */
 public class GameRunner {
-    private static final Scanner sc = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
     private Deck deck;
     private Hand playerHand;
     private Opponent computerAdversary;
     private int points;
-    private LinkedHashMap<String, Integer> highscoreMap;
-    private ReplayHandler replayHandler = new ReplayHandler();
+    private ReplayHandler replayHandler;
+    private HighScoreHandler highscoreHandler;
 
     public GameRunner(){
         deck = new Deck();
@@ -23,7 +22,8 @@ public class GameRunner {
         computerAdversary = new Opponent();
         computerAdversary.setOpponentCard(deck.pickCardFromTop());
         points = 0;
-        highscoreMap = generateHighscoreMap();
+        highscoreHandler = new HighScoreHandler();
+        replayHandler = new ReplayHandler();
         replayHandler.wipeReplayFile();
     }
 
@@ -167,115 +167,21 @@ public class GameRunner {
         replayHandler.writeLineToReplayFile(
                 "ggwp, game ended with: " + points + " points.");
 
-        checkForHighscore();
-        writeHighscoreMapToFile();
+        highscoreHandler.checkForHighscore(points);
+        highscoreHandler.writeHighscoreMapToFile();
 
         System.out.println("Would you like to view the highscore table? (\"1\" for yes,\"2\" for no)");
         int highscoreViewChoice = inputInteger(1,2);
         if(highscoreViewChoice == 1){
-            printHighscoreTable();
+            highscoreHandler.printHighscoreTable();
         }
 
         System.out.println("Would you like to view a replay of that game? (\"1\" for yes,\"2\" for no)");
         int replayViewChoice = inputInteger(1,2);
         if(replayViewChoice == 1){
-            replayHandler.playReplay();
+            replayHandler.playConsoleReplay();
         }
 
-    }
-
-    public void checkForHighscore(){
-
-
-        // Check if highscore map is full or not, and add new entry accordingly
-        if(highscoreMap.size() < 5){
-            String name = inputUsername();
-            highscoreMap.put(name, points);
-        }
-        else if(points >= highscoreMap.lastEntry().getValue()){
-            String name = inputUsername();
-
-            highscoreMap.remove(highscoreMap.lastEntry().getKey());
-            highscoreMap.put(name, points);
-
-            // Sort map by its entries
-            LinkedHashMap<String, Integer> tempMap = new LinkedHashMap<>();
-            highscoreMap.entrySet().stream().
-                    sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).
-                    forEach(entry -> tempMap.put(entry.getKey(), entry.getValue()));
-            highscoreMap = tempMap;
-
-        }
-    }
-
-    private String inputUsername(){
-        System.out.println("New high score! Enter your name to be added to the highscore table.");
-        while(true){
-            System.out.println("Please do not include any commas in the username (\",\")");
-            String input = sc.nextLine();
-
-            if(input.indexOf(',') != -1) continue;
-            if(input.equals("")) continue;
-            return input;
-        }
-    }
-
-    public LinkedHashMap<String, Integer> generateHighscoreMap(){
-        /*
-            Read highscore file to populate highscore map
-         */
-
-        // Normal HashMap didn't keep scores in order, whereas the linked map does keep order
-        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
-        try{
-            File file = new File("src/data/highscores.txt");
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine();  // reads commented line in file + ignores
-            while((line = reader.readLine()) != null){
-                String[] array = line.split(",");
-                map.put(array[0], Integer.parseInt(array[array.length-1]));
-            }
-        }
-        catch (FileNotFoundException e){
-            System.out.println("File not found...");
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-        return map;
-    }
-
-    public void writeHighscoreMapToFile(){
-
-
-        try{
-            File file = new File("src/data/highscores.txt");
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-            writer.println("#username, score");
-
-            String[] usernames = highscoreMap.keySet().toArray(new String[0]);
-            for(int i = 0; i<highscoreMap.size(); i++){
-                writer.println(usernames[i] + "," + highscoreMap.get(usernames[i]));  // username,score
-            }
-            writer.close();
-        }
-        catch (FileNotFoundException e){
-            System.out.println("File not found...");
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-
-    }
-
-    public void printHighscoreTable(){
-        String out = "\n====== High Score Table ======\n";
-
-        String[] usernames = highscoreMap.keySet().toArray(new String[0]);
-        for(int i = 0; i < highscoreMap.size(); i++){
-            out += (i+1) + ". " + usernames[i] + " : " + highscoreMap.get(usernames[i]) + "\n";
-        }
-        System.out.println(out);
     }
 
     public int inputInteger(){
@@ -285,7 +191,7 @@ public class GameRunner {
 
         while(true){
             try{
-                return Integer.parseInt(sc.nextLine());
+                return Integer.parseInt(scanner.nextLine());
             }
             catch(Exception e){
                 System.out.println("Not an integer! try again:");
@@ -311,7 +217,6 @@ public class GameRunner {
 
 
     //-----------------------------------------GUI version methods--------------------------------------//
-
     public void writeGameStatusToReplayFile(){
         replayHandler.writeLineToReplayFile("Current score: " + points);
         replayHandler.writeLineToReplayFile("Deck cards left: " + deck.getCardsDeck().size());

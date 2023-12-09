@@ -15,10 +15,10 @@ public class ReplayHandler {
             nonAppendingWriter = new PrintWriter(new BufferedWriter(new FileWriter(replayFile)));
         }
         catch (FileNotFoundException e){
-            System.out.println("Replay file not found...");
+            System.out.println("Replay file not found when creating replay viewer");
         }
         catch (IOException e){
-            System.out.println("Something went wrong with the replayViewer...");
+            System.out.println("Something went wrong with the replay viewer...");
         }
     }
 
@@ -33,7 +33,7 @@ public class ReplayHandler {
         nonAppendingWriter.flush();
     }
 
-    public void playReplay(){
+    public void playConsoleReplay(){
         try{
             BufferedReader reader= new BufferedReader(new FileReader(replayFile));
             String line = "";
@@ -54,7 +54,6 @@ public class ReplayHandler {
 
 
     public void playGuiReplay(){
-        //todo Display frame array somehow
         try{
             BufferedReader reader= new BufferedReader(new FileReader(replayFile));
             String out = "";
@@ -63,7 +62,7 @@ public class ReplayHandler {
                 out += line + "\n";
             }
 
-            JOptionPane.showMessageDialog(null, out);
+            JOptionPane.showMessageDialog(null, out, "Round", JOptionPane.INFORMATION_MESSAGE);
         }
         catch (FileNotFoundException e){
             System.out.println("File not found...");

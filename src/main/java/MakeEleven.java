@@ -4,22 +4,15 @@ public class MakeEleven {
     public static void main(String[] args) {
         MakeEleven makeEleven = new MakeEleven();
 
-        //makeEleven.runVisualTests();
+        //makeEleven.runAsJavaxSwingGUI();
 
-        makeEleven.runAsJavaxSwingGUI();
-
-        //makeEleven.runConsoleGame();
+        makeEleven.runConsoleGame();
     }
 
     private void runConsoleGame(){
-        // Run game as a CLI
+        // Run game with CLI
         GameRunner gameRunner = new GameRunner();
         gameRunner.runGameAsConsoleApp();
-    }
-
-    private void runVisualTests(){
-        VisualTesting vt = new VisualTesting();
-        vt.testGenerateDeckAndNewHand();
     }
 
     private void runAsJavaxSwingGUI(){
