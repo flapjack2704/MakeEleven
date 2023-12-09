@@ -2,6 +2,7 @@ package main.java;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class ReplayHandler {
     private final File replayFile;
@@ -54,21 +55,31 @@ public class ReplayHandler {
 
 
     public void playGuiReplay(){
+
+        ArrayList<String> rounds = new ArrayList<>();
+        String roundText = "";
         try{
-            BufferedReader reader= new BufferedReader(new FileReader(replayFile));
-            String out = "";
+            BufferedReader reader = new BufferedReader(new FileReader(replayFile));
+
             String line = "";
             while((line = reader.readLine()) != null){
-                out += line + "\n";
+                if(line.equals("------------------------------------------------------------------------")){
+                    rounds.add(roundText);
+                    roundText = "";
+                }  // the long line of dashes is the round separator in the replay file
+                else roundText += line + "\n";
             }
-
-            JOptionPane.showMessageDialog(null, out, "Round", JOptionPane.INFORMATION_MESSAGE);
+            rounds.add(roundText);  // catches final round
         }
         catch (FileNotFoundException e){
             System.out.println("File not found...");
         }
         catch (IOException e){
             e.printStackTrace();
+        }
+
+        for(int i = 0; i < rounds.size(); i++){
+            JOptionPane.showMessageDialog(null, rounds.get(i), "Round " + (i+1), JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

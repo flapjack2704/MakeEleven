@@ -4,9 +4,9 @@ public class MakeEleven {
     public static void main(String[] args) {
         MakeEleven makeEleven = new MakeEleven();
 
-        //makeEleven.runAsJavaxSwingGUI();
+        makeEleven.runAsJavaxSwingGUI();
 
-        makeEleven.runConsoleGame();
+        //makeEleven.runConsoleGame();
     }
 
     private void runConsoleGame(){

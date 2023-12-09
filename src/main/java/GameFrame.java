@@ -299,7 +299,7 @@ public class GameFrame extends JFrame implements ActionListener{
         showHighScoreButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(showHighScoreButton.isEnabled()) showHighScoreButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+                showHighScoreButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -319,7 +319,7 @@ public class GameFrame extends JFrame implements ActionListener{
         showReplayButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(showReplayButton.isEnabled()) showReplayButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
+                showReplayButton.setBackground(CardButton.HOVERED_BUTTON_COLOUR);
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -332,7 +332,6 @@ public class GameFrame extends JFrame implements ActionListener{
         showHighScoreButton.addActionListener(e -> showHighScoreButtonPressed());
         showReplayButton.addActionListener(e -> showReplayButtonPressed());
 
-        showHighScoreButton.setEnabled(false);
         this.revalidate();
         this.repaint();
     }
@@ -379,11 +378,10 @@ public class GameFrame extends JFrame implements ActionListener{
         this.repaint();
     }
     public void showHighScoreButtonPressed(){
-        //todo Add high score button function
+        gameRunner.showGuiHighscoreTable();
     }
     public void showReplayButtonPressed(){
-        //todo Add show replay button function
-        gameRunner.showReplay();
+        gameRunner.showGuiReplay();
     }
 
     @Override

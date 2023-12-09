@@ -167,13 +167,13 @@ public class GameRunner {
         replayHandler.writeLineToReplayFile(
                 "ggwp, game ended with: " + points + " points.");
 
-        highscoreHandler.checkForHighscore(points);
+        highscoreHandler.checkForHighscore(points, false);
         highscoreHandler.writeHighscoreMapToFile();
 
         System.out.println("Would you like to view the highscore table? (\"1\" for yes,\"2\" for no)");
         int highscoreViewChoice = inputInteger(1,2);
         if(highscoreViewChoice == 1){
-            highscoreHandler.printHighscoreTable();
+            highscoreHandler.printConsoleHighscoreTable();
         }
 
         System.out.println("Would you like to view a replay of that game? (\"1\" for yes,\"2\" for no)");
@@ -262,8 +262,9 @@ public class GameRunner {
                     "You didn't make Eleven, and the suit didn't match. Therefore it is game over");
             replayHandler.writeLineToReplayFile(
                     "ggwp, game ended with: " + points + " points.");
-            replayHandler.writeLineToReplayFile(
-                    "------------------------------------------------------------------------");
+
+            guiCheckForHighscore();
+            highscoreHandler.writeHighscoreMapToFile();
             return false;
         }
 
@@ -280,8 +281,9 @@ public class GameRunner {
                     "Bloody hell, the deck is out of cards, you did well staying in that long!");
             replayHandler.writeLineToReplayFile(
                     "ggwp, game ended with: " + points + " points.");
-            replayHandler.writeLineToReplayFile(
-                    "------------------------------------------------------------------------");
+
+            guiCheckForHighscore();
+            highscoreHandler.writeHighscoreMapToFile();
             return false;
         }  // No sense ending the game when we have an empty deck BUT have a card everywhere else it needs to be
 
@@ -309,8 +311,15 @@ public class GameRunner {
         playerHand.removeCardFromHand(card);
     }
 
-    public void showReplay(){
+    public void showGuiReplay(){
         replayHandler.playGuiReplay();
+    }
+    public void showGuiHighscoreTable(){
+        highscoreHandler.printGuiHighscoreTable();
+    }
+
+    public void guiCheckForHighscore(){
+        highscoreHandler.checkForHighscore(points, true);
     }
 
 }
