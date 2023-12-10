@@ -79,7 +79,8 @@ public class ReplayHandler {
         }
 
         for(int i = 0; i < rounds.size(); i++){
-            JOptionPane.showMessageDialog(null, rounds.get(i), "Round " + (i+1), JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    null, rounds.get(i), "Replay Round " + (i+1), JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

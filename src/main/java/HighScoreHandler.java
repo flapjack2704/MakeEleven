@@ -38,6 +38,10 @@ public class HighScoreHandler {
     }
 
     public void checkForHighscore(int points, boolean isGuiVersion){
+        /*
+            Checks highscore map to see if there is either a spot available, or if the new score warrants a place there.
+            Adds the new score if needed.
+         */
 
         String name;
         // Check if highscore map is full or not, and add new entry accordingly
@@ -61,17 +65,19 @@ public class HighScoreHandler {
             highscoreMap.remove(highscoreMap.lastEntry().getKey());
             highscoreMap.put(name, points);
 
-            /*
-                Sort map by its entries
-                I couldn't puzzle out how to sort this without having to use an intermediary map to collect entries
-             */
-            LinkedHashMap<String, Integer> tempMap = new LinkedHashMap<>();
-            highscoreMap.entrySet().stream().
-                    sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).
-                    forEach(entry -> tempMap.put(entry.getKey(), entry.getValue()));
-            highscoreMap = tempMap;
-
         }
+
+        /*
+            Sort map by its entries
+            I couldn't puzzle out how to sort this without having to use an intermediary map to collect entries
+            https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html#comparingByValue-java.util.Comparator-
+            https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html
+        */
+        LinkedHashMap<String, Integer> tempMap = new LinkedHashMap<>();
+        highscoreMap.entrySet().stream().
+                sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).
+                forEach(entry -> tempMap.put(entry.getKey(), entry.getValue()));
+        highscoreMap = tempMap;
     }
 
     private String consoleInputUsername(){

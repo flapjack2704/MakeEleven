@@ -189,7 +189,7 @@ public class GameRunner {
             Scanner input validator method for integers
          */
 
-        while(true){
+        while(true){  // Breaks when we get a valid input
             try{
                 return Integer.parseInt(scanner.nextLine());
             }
@@ -225,6 +225,12 @@ public class GameRunner {
     }
 
     public boolean checkSelectedCard(Card card){
+        /*
+            Used in GameFrame's handCardPressed() method to check if 11 has been made by the clicked-on card,
+             or if they are the same suit, or if neither are true.
+            It also then repopulates the cards in hand + the opponent's card if it isn't game-over
+            Returns false if it is game-over, true if not
+         */
 
         replayHandler.writeLineToReplayFile("Card chosen: " + card);
 
@@ -268,11 +274,8 @@ public class GameRunner {
             return false;
         }
 
-        replayHandler.writeLineToReplayFile(
-                "------------------------------------------------------------------------");
-
         // Repopulate hand
-        while(playerHand.getCards().size() != 5){
+        while(playerHand.getCards().size() < 5){
             playerHand.addCardToHand(deck.pickCardFromTop());
         }
 
@@ -286,6 +289,8 @@ public class GameRunner {
             highscoreHandler.writeHighscoreMapToFile();
             return false;
         }  // No sense ending the game when we have an empty deck BUT have a card everywhere else it needs to be
+        replayHandler.writeLineToReplayFile(
+                "------------------------------------------------------------------------");
 
         computerAdversary.setOpponentCard(deck.pickCardFromTop());
 
