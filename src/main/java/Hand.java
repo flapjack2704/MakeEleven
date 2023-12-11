@@ -5,14 +5,6 @@ import java.util.ArrayList;
 public class Hand {
     private ArrayList<Card> cards = new ArrayList<>();
 
-    public Hand(){
-
-    }
-
-    public Hand(ArrayList<Card> cards){
-        this.cards = cards;
-    }
-
 
     public ArrayList<Card> getCards() {
         return cards;

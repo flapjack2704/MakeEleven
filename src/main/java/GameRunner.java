@@ -249,8 +249,8 @@ public class GameRunner {
                         for(int j = playerHand.getCards().size()-1; j>=0; j--){
                             if(playerHand.getCards().get(j).isPictureCard()){
                                 replayHandler.writeLineToReplayFile(
-                                        "Picture card " + playerHand.getCards().get(i) + " removed from hand");
-                                removeCardFromHand(playerHand.getCards().get(i));
+                                        "Picture card " + playerHand.getCards().get(j) + " removed from hand");
+                                removeCardFromHand(playerHand.getCards().get(j));
                             }
                         }
                     }

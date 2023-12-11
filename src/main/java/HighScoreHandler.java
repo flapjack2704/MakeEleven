@@ -68,14 +68,15 @@ public class HighScoreHandler {
         }
 
         /*
-            Sort map by its entries
-            I couldn't puzzle out how to sort this without having to use an intermediary map to collect entries
+            Sort map by its entries by creating a Set of the entries, sorting that by value, and adding each entry
+             to a new temporary LinkedHashMap.
+            I couldn't puzzle out how to sort this without having to use a temporary map to collect entries,
+             and I'd like to figure out how to do that in future.
             https://docs.oracle.com/javase/8/docs/api/java/util/Map.Entry.html#comparingByValue-java.util.Comparator-
             https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html
         */
         LinkedHashMap<String, Integer> tempMap = new LinkedHashMap<>();
-        highscoreMap.entrySet().stream().
-                sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).
+        highscoreMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).
                 forEach(entry -> tempMap.put(entry.getKey(), entry.getValue()));
         highscoreMap = tempMap;
     }
