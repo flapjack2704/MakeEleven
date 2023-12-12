@@ -34,7 +34,7 @@ public class ReplayHandler {
         nonAppendingWriter.flush();
     }
 
-    public void playConsoleReplay(){
+    public void playConsoleReplay(){  //console only
         try{
             BufferedReader reader= new BufferedReader(new FileReader(replayFile));
             String line = "";

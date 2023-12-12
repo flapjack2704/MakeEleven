@@ -1,64 +1,33 @@
 -------------------------------- Replay --------------------------------
 Current score: 0
 Deck cards left: 46
-Your hand: (1) 5♠, (2) A♦, (3) J♥, (4) 4♠, (5) 9♥
-Computer's card: Q♦
-Hand sorted by suit
-New hand: (1) A♦, (2) 9♥, (3) J♥, (4) 4♠, (5) 5♠
-Card chosen: A♦
-You made Eleven with A♦ + Q♦
-Picture card J♥ removed from hand
-------------------------------------------------------------------------
-Current score: 1
-Deck cards left: 43
-Your hand: (1) 9♥, (2) 4♠, (3) 5♠, (4) 3♣, (5) Q♣
-Computer's card: A♥
-Hand sorted by suit
-New hand: (1) 3♣, (2) Q♣, (3) 9♥, (4) 4♠, (5) 5♠
-Card chosen: Q♣
-You made Eleven with Q♣ + A♥
-------------------------------------------------------------------------
-Current score: 2
-Deck cards left: 41
-Your hand: (1) 3♣, (2) 9♥, (3) 4♠, (4) 5♠, (5) 6♦
-Computer's card: A♠
-Card chosen: 5♠
+Your hand: (1) A♦, (2) 3♦, (3) Q♠, (4) 5♣, (5) 3♠
+Computer's card: 2♣
+Hand sorted by value
+New hand: (1) A♦, (2) 3♦, (3) 3♠, (4) 5♣, (5) Q♠
+Card chosen: 5♣
 You didn't make Eleven, but at least it was the same suit so we carry on...
 ------------------------------------------------------------------------
-Current score: 2
-Deck cards left: 39
-Your hand: (1) 3♣, (2) 9♥, (3) 4♠, (4) 6♦, (5) 8♣
-Computer's card: 7♣
-Card chosen: 4♠
-You made Eleven with 4♠ + 7♣
-------------------------------------------------------------------------
-Current score: 3
-Deck cards left: 37
-Your hand: (1) 3♣, (2) 9♥, (3) 6♦, (4) 8♣, (5) 10♣
-Computer's card: 5♦
-Card chosen: 6♦
-You made Eleven with 6♦ + 5♦
-------------------------------------------------------------------------
-Current score: 4
-Deck cards left: 35
-Your hand: (1) 3♣, (2) 9♥, (3) 8♣, (4) 10♣, (5) 9♣
-Computer's card: 3♥
-Card chosen: 8♣
-You made Eleven with 8♣ + 3♥
-------------------------------------------------------------------------
-Current score: 5
-Deck cards left: 33
-Your hand: (1) 3♣, (2) 9♥, (3) 10♣, (4) 9♣, (5) 6♠
-Computer's card: 10♥
-Hand sorted by suit
-New hand: (1) 3♣, (2) 9♣, (3) 10♣, (4) 9♥, (5) 6♠
-Card chosen: 9♥
+Current score: 0
+Deck cards left: 44
+Your hand: (1) A♦, (2) 3♦, (3) 3♠, (4) Q♠, (5) A♥
+Computer's card: 9♦
+Card chosen: 3♦
 You didn't make Eleven, but at least it was the same suit so we carry on...
 ------------------------------------------------------------------------
-Current score: 5
-Deck cards left: 31
-Your hand: (1) 3♣, (2) 9♣, (3) 10♣, (4) 6♠, (5) 2♣
-Computer's card: 3♦
-Card chosen: 10♣
+Current score: 0
+Deck cards left: 42
+Your hand: (1) A♦, (2) 3♠, (3) Q♠, (4) A♥, (5) Q♥
+Computer's card: 6♠
+Hand sorted by value
+New hand: (1) A♦, (2) A♥, (3) 3♠, (4) Q♠, (5) Q♥
+Card chosen: Q♠
+You didn't make Eleven, but at least it was the same suit so we carry on...
+------------------------------------------------------------------------
+Current score: 0
+Deck cards left: 40
+Your hand: (1) A♦, (2) A♥, (3) 3♠, (4) Q♥, (5) 8♦
+Computer's card: 4♣
+Card chosen: Q♥
 You didn't make Eleven, and the suit didn't match. Therefore it is game over
-ggwp, game ended with: 5 points.
+ggwp, game ended with: 0 points.

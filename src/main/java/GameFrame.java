@@ -26,8 +26,6 @@ public class GameFrame extends JFrame implements ActionListener{
         initGameFrame(this.gameRunner);
     }
 
-    public GameFrame(){}
-
 
     private void initGameFrame(GameRunner gameRunner){
         /*
