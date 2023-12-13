@@ -46,24 +46,25 @@ public class HighScoreHandler {
         String name;
         // Check if highscore map is full or not, and add new entry accordingly
         if(highscoreMap.size() < 5){
-            if(isGuiVersion){
-                name = guiInputUsername();
+            if(isGuiVersion) name = guiInputUsername();
+            else name = consoleInputUsername();
+
+            if(usernameIsAlreadyInHighscores(name)){
+                if(highscoreMap.get(name) < points) highscoreMap.put(name, points);
             }
-            else{
-                name = consoleInputUsername();
-            }
-            highscoreMap.put(name, points);
+            else highscoreMap.put(name, points);
         }
         else if(points >= highscoreMap.lastEntry().getValue()){
-            if(isGuiVersion){
-                name = guiInputUsername();
+            if(isGuiVersion) name = guiInputUsername();
+            else name = consoleInputUsername();
+
+            if(usernameIsAlreadyInHighscores(name)){
+                if(highscoreMap.get(name) < points) highscoreMap.put(name, points);
             }
             else{
-                name = consoleInputUsername();
+                highscoreMap.remove(highscoreMap.lastEntry().getKey());
+                highscoreMap.put(name, points);
             }
-
-            highscoreMap.remove(highscoreMap.lastEntry().getKey());
-            highscoreMap.put(name, points);
 
         }
 
@@ -91,7 +92,6 @@ public class HighScoreHandler {
             if(input == null) continue;
             if(input.equals("")) continue;
             if(input.indexOf(',') != -1) continue;
-            if(usernameIsAlreadyInHighscores(input)) continue;
 
             return input;
         }
@@ -147,7 +147,6 @@ public class HighScoreHandler {
             if(input == null) continue;
             if(input.equals("")) continue;
             if(input.indexOf(',') != -1) continue;
-            if(usernameIsAlreadyInHighscores(input)) continue;
 
             return input;
         }
