@@ -1,6 +1,6 @@
 #username, score
 xX_ImPr0b4bLyH4Ck1nG_Xx,30
-rqghiorgeuiorge,14
-x,3
-no,2
-new,0
+Flapjack_RL,14
+test,5
+SlightlyHarderToBeat,3
+EasilyBeatableScore,1
